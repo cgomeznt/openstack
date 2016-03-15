@@ -2,7 +2,7 @@
 
 Nada de lo que esta aqui intenta sustituir la documentación oficial de [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/)
 
-Sabemos que [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/)ya es un version obsoleta y ya esta [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/), pero queremos crear un aprendizaje profundo de OpenStack y el cambio que hay en [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/) es considerable, por eso vamos a comenzar desde [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/) para tener unas solidas bases y luego llegar [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/).
+Sabemos que [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/) ya es un version obsoleta y esta [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/), pero queremos crear un aprendizaje profundo de OpenStack y el cambio que hay en [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/)  es considerable, por eso vamos a comenzar desde [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/) para tener unas solidas bases y luego llegar [OpenStack Liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/).
 
 ### La meta es:
 1. instalar [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/) paso a paso.
@@ -12,7 +12,8 @@ Sabemos que [OpenStack Juno](http://docs.openstack.org/juno/install-guide/instal
 5. Creación de script para automatizar.
 6. Script para el monitoreo.
 7. Desastre y Recuperación.
-5. Configuraciones de Alta Disponibilidad.
+8. Configuraciones de Alta Disponibilidad.
+9. Hacer upgrade de las distintas versiones de OpenStack.
 
 Bueno...!!! continuaremos 
 
