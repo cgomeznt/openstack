@@ -1,10 +1,10 @@
 ## Instalar OpenStack en Ubuntu 14.04.4 
 
 Nada de lo que esta aqui intenta sustituir la documentación oficial de:
-. [OpenStack icehouse](http://docs.openstack.org/icehouse/install-guide/install/apt/content/)
-. [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/)
-. [OpenStack kilo](http://docs.openstack.org/kilo/install-guide/install/apt/content/)
-. [OpenStack liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/)
+[OpenStack icehouse](http://docs.openstack.org/icehouse/install-guide/install/apt/content/)
+, [OpenStack Juno](http://docs.openstack.org/juno/install-guide/install/apt/content/)
+, [OpenStack kilo](http://docs.openstack.org/kilo/install-guide/install/apt/content/)
+, [OpenStack liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/)
 
 Solo tratamos de crear unos scripts que los anime a instalar OpenStack ya sea (icehouse ó juno ó kilo ó liberty) cualquiera de sus versiones en ubuntu 14.04.4, modificar estos script ó que usted desarrolle mejores script, pero la meta final es ayudar al aprendizaje de [OpenStack](http://www.openstack.org/). 
 
