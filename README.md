@@ -30,7 +30,7 @@ Luego comenzar a leer la guia de [OpenStack](http://docs.openstack.org/) y ejecu
 
 Bueno...!!! continuaremos 
 
-
+[Introducción](guia/introduccion.rst)
 
 
 [vea tambien este link](http://instalandoyconfigurandouncorreo.blogspot.com/)
