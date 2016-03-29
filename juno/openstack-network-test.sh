@@ -6,11 +6,26 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ ! -f ./.networking ];then
+echo "
+##################################################################################################
+
+No puede hacer este paso debe ejecutar primero
+
+'. ./openstack-networking.sh'
+
+##################################################################################################
+"
+exit 1
+fi
+
 # Hacemos los test de conectividad
 ping -c 4 controller
 ping -c 4 network
 ping -c 4 compute1
 ping -c 4 openstack.org
+
+touch ./.network-test
 
 echo "
 ###############################################################################################################

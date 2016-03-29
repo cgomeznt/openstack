@@ -6,6 +6,19 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ ! -f ./.server-test ];then
+echo "
+##################################################################################################
+
+No puede hacer este paso debe ejecutar primero
+
+'. ./openstack-server-test.sh'
+
+##################################################################################################
+"
+exit 1
+fi
+
 # Actualizamos los indices de los paquetes del apt
 apt-get update
 
@@ -13,7 +26,11 @@ apt-get update
 apt-get install ntp -y
 
 # Hacemos respaldo
-cp -dp /etc/ntp.conf /etc/ntp.conf.$(date +%H%M-%d%m%Y)
+if [ -f /etc/ntp.conf.out ]; then
+cp -dp /etc/ntp.conf.out /etc/ntp.conf
+else
+cp -dp /etc/ntp.conf /etc/ntp.conf.out
+fi
 
 if [ "$(hostname)" == "controller" ]; then
 sed -e "
@@ -43,12 +60,14 @@ ntpq -c peers
 
 ntpq -c assoc
 
+touch ./.ntp
+
 echo "
 ##################################################################################################
 
-	Si la configuracion del NTP esta correcta continue
+Si la configuracion del NTP esta correcta continue
 
-	Ahora ejecute './openstack-openstack-packages.sh'
+Ahora ejecute '. ./openstack-openstack-packages.sh'
 
 ##################################################################################################
 "

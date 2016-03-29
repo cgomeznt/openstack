@@ -6,11 +6,26 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ ! -f ./.network-test ];then
+echo "
+##################################################################################################
+
+No puede hacer este paso debe ejecutar primero
+
+'. ./openstack-network-test.sh'
+
+##################################################################################################
+"
+exit 1
+fi
+
 # Instalamos cpu-checker que nos ayuda a saber si nuestro equipo soporta virtualizacion
 #apt-get install -y cpu-checker
 
 # Hacemos el test
 #/usr/sbin/kvm-ok
+
+touch ./server-test
 
 if  [ "$(egrep -c '(vmx|svm)' /proc/cpuinfo)" != "0" ]; then
 echo "
@@ -21,7 +36,7 @@ echo "
 	de nova services, esto tomelo en cuenta para cuando instale nova. lo antes dicho no es necesario
 	si esto es un equipo fisico.
 
-	Ahora ejecute './openstack_ntp.sh' to continue setup.
+	Ahora ejecute '. ./openstack_ntp.sh'
 
 ##################################################################################################
 "
@@ -37,7 +52,7 @@ echo "
 	...
 	virt_type = qemu
 
-	Puede continuar con './openstack_ntp.sh' to continue setup.
+	Puede continuar con '. ./openstack_ntp.sh'
 
 ##################################################################################################
 "

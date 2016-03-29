@@ -6,6 +6,19 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ ! -f ./.ntp ];then
+echo "
+##################################################################################################
+
+No puede hacer este paso debe ejecutar primero
+
+'. ./openstack-server-test.sh'
+
+##################################################################################################
+"
+exit 1
+fi
+
 # Habilitamos el repositorio de OpenStack June
 apt-get install ubuntu-cloud-keyring
 echo "deb http://ubuntu-cloud.archive.canonical.com/ubuntu" \
@@ -21,7 +34,7 @@ echo "
 
 	Debes reiniciar el equipo
 
-	Ahora ejecute './openstack-database.sh'
+	Ahora ejecute '. ./openstack-database.sh'
 
 ##################################################################################################
 "
@@ -31,7 +44,7 @@ echo "
 
 	Debes reiniciar el equipo
 
-	Ahora ejecute './openstack-nova-compute.sh'
+	Ahora ejecute '. ./openstack-nova-compute.sh'
 
 ##################################################################################################
 "
