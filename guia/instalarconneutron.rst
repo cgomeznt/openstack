@@ -6,14 +6,14 @@ Vamos a colocar las siguientes imagenes que son importante tenerlas presente. Si
 
 Arquitectura minima de ejemplo con legacy networking (neutron)— Hardware requirements
 
-.. figure:: ../images/neutron/Minimal_architecture_neutron.png
+.. figure:: ../images/neutron/Minimal_architecture_Neutron.png
 
 Arquitectura minima de ejemplo con legacy networking (neutron)— Capa de Red
 
-.. figure:: ../images/neutron/Minimal_architecture_neutron_1.png
+.. figure:: ../images/neutron/Minimal_architecture_Neutron_1.png
 
 Arquitectura minima de ejemplo con legacy networking (neutron)— Capa de Servicio
 
-.. figure:: ../images/neutron/Minimal_architecture_neutron_2.png
+.. figure:: ../images/neutron/Minimal_architecture_Neutron_2.png
 
 Continuamos trabajando...!!!
