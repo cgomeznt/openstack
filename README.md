@@ -10,6 +10,7 @@ Solo tratamos de crear algunos scripts que los anime a instalar OpenStack (iceho
 
 ### Capítulos:
 * [Introducción](guia/introduccion.rst)
+* [Maquinas Virtuales en virtualbox](guia/maquinasvirtuales.rst)
 * instalar [OpenStack](http://www.openstack.org/) paso a paso, tal cual como lo indica la guia de [OpenStack](http://www.openstack.org/).
 * Entender todo los pasos que se esta haciendo.
 * Simular fallas y como corregirlas.
@@ -23,10 +24,6 @@ Solo tratamos de crear algunos scripts que los anime a instalar OpenStack (iceho
 Pues para empezar es tan simple como descargar el projecto
 ```
 git clone https://github.com/cgomeznt/openstack.git
-```
-Luego comenzar a leer la guia de [OpenStack](http://docs.openstack.org/) y ejecutar el script
-```
-. .openstack-inicio.sh
 ```
 
 Bueno...!!! continuaremos 
