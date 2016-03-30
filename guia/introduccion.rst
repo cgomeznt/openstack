@@ -1,40 +1,29 @@
-Titulo
-=============
+Introducción
+============
 
-Sub-Titulo
-+++++++++++++++++
+Primero que todo vamos a seguir paso a paso las guías de `OpenStack <http://docs.openstack.org/>`_ (por medio de los scripts), es decir, los scripts estan desarrollados por cada capitulo de la guía de OpenStack, por lo tanto se recomienda que primero lea la guías de OpenStack, que la tenga siempre a la mano y luego proceda con la practica.
 
-Como agregar una imagen
+En esta quía vamos a utilizar un Host con Debian Jessie y con virtualbox. Debemos tener creada en virtualbox tres (3) maquinas virtuales con Ubuntu 14.04.4 trusty. En estas maquinas virtuales podremos intalar cualquiera de las siguientes versiones de OpenStack (icehouse, juno, kilo o liberty)
 
-.. figure:: ../images/OpenStack-logo.png
+En este laboratorio primero vamos a instalar  solo dos (2) de las maquinas virtuales para la siguiente arquitectura de nodos (nova-network)
+nodo controller
+nodo compute1
 
-Colocar Viñetas
+Luego en el siguiente laboratorio utilizaremos las tres (3) maquinas virtuales para la arquitectura de los siguientes nodos (neutron-network)
+nodo controller
+nodo network (neutron)
+nodo compute1
 
-* `nova-network`
-* `neutron` (formerly known as `quantum`)
+Antes de continuar prepare su laboratorio ya sea con equipos físicos o con maquinas virtuales como las vamos a trabajar aquí.
 
-Hacer un link
-`OpenStack <http://www.openstack.org/>`_
+Para descargar el proyecto debe hacer lo siguiente::
 
-**Hacer negritas**
+	$ git clone https://github.com/cgomeznt/openstack.git
 
-Para colocar comandos::
+Luego puede continuar con
 
-    root@debian# ps -aux
+`Maquinas Virtuales en virtualbox <maquinasvirtuales.rst>`_
 
-``root@debian# ps -aux``
 
-+-------+------------------+-----------------------------------------------------+
-| iface | network          | usage                                               |
-+=======+==================+=====================================================+
-| eth0  | 10.0.0.0/24      | `management network`                                |
-|       |                  | (internal network of the OS services)               |
-+-------+------------------+-----------------------------------------------------+
-| eth1  | 172.16.0.0/24    | `public network`                                    |
-+-------+------------------+-----------------------------------------------------+
-| eth2  | 0.0.0.0          | slave interface of br100 (integration bridge)       |
-+-------+------------------+-----------------------------------------------------+
-| br100 | 10.99.0.0/22     | `integration network`, internal network of the VMs  |
-+-------+------------------+-----------------------------------------------------+
 
 
