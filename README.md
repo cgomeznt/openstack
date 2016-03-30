@@ -6,9 +6,10 @@ Nada de lo que esta aqui intenta sustituir la documentación oficial de:
 , [OpenStack kilo](http://docs.openstack.org/kilo/install-guide/install/apt/content/)
 , [OpenStack liberty](http://docs.openstack.org/liberty/install-guide-ubuntu/)
 
-Solo tratamos de crear unos scripts que los anime a instalar OpenStack ya sea (icehouse ó juno ó kilo ó liberty) cualquiera de sus versiones en ubuntu 14.04.4, modificar estos script ó que usted desarrolle mejores script, pero la meta final es ayudar al aprendizaje de [OpenStack](http://www.openstack.org/). 
+Solo tratamos de crear algunos scripts que los anime a instalar OpenStack (icehouse ó juno ó kilo ó liberty) cualquiera de sus versiones en ubuntu 14.04.4, que pueda modificar estos script ó que usted desarrolle mejores script, pero la meta final es ayudar al aprendizaje de [OpenStack](http://www.openstack.org/). 
 
-### Partes de la meta final:
+### Capitulos:
+[Introducción](guia/introduccion.rst)
 1. instalar [OpenStack](http://www.openstack.org/) paso a paso, tal cual como lo indica la guia de [OpenStack](http://www.openstack.org/).
 2. Entender todo los pasos que se esta haciendo.
 3. Simular fallas y como corregirlas.
@@ -29,8 +30,6 @@ Luego comenzar a leer la guia de [OpenStack](http://docs.openstack.org/) y ejecu
 ```
 
 Bueno...!!! continuaremos 
-
-[Introducción](guia/introduccion.rst)
 
 
 [vea tambien este link](http://instalandoyconfigurandouncorreo.blogspot.com/)
