@@ -5,9 +5,11 @@ Sub-Titulo
 +++++++++++++++++
 
 Como agregar una imagen
+
 .. figure:: ../images/OpenStack-logo.png
 
 Colocar Viñetas
+
 * `nova-network`
 * `neutron` (formerly known as `quantum`)
 
@@ -17,6 +19,11 @@ Hacer un link
 **Hacer negritas**
 
     root@debian# ps -aux
+
+```
+root@debian# ps -aux
+
+```
 
 +-------+------------------+-----------------------------------------------------+
 | iface | network          | usage                                               |
