@@ -18,12 +18,11 @@ Hacer un link
 
 **Hacer negritas**
 
+Para colocar comandos::
+
     root@debian# ps -aux
 
-```
-root@debian# ps -aux
-
-```
+``root@debian# ps -aux``
 
 +-------+------------------+-----------------------------------------------------+
 | iface | network          | usage                                               |
