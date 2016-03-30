@@ -11,7 +11,8 @@ Solo tratamos de crear algunos scripts que los anime a instalar OpenStack (iceho
 ### Capítulos:
 * [Introducción](guia/introduccion.rst)
 * [Maquinas Virtuales en virtualbox](guia/maquinasvirtuales.rst)
-* instalar [OpenStack](http://www.openstack.org/) paso a paso, tal cual como lo indica la guia de [OpenStack](http://www.openstack.org/).
+* [instalar OpenStack con la arquitectura de nodos (nova-network)](guia/instalarconnova.rst)
+* [instalar OpenStack con la arquitectura de nodos (neutron)](guia/instalarconneutron.rst)
 * Entender todo los pasos que se esta haciendo.
 * Simular fallas y como corregirlas.
 * Realizar diseños reales para su implementación.

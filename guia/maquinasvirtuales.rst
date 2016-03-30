@@ -11,7 +11,7 @@ Cada una de las maquinas virtuales les otorgamos
 * Se habilito en sistema, aceleración, el hardware de virtualización. 
 * Se deshabilito el audio, los puertos en serie y los USB.
 * El disco es SATA y tiene una capacidad de 20Gb.
-* El adaptador de red se utilizaron tres (3) adaptadores.
+* El adaptador de red se utilizarón tres (3) adaptadores.
 	* Adaptador uno, conectado a Red Interna.
 	* Adaptador dos, conectado a NAT.
 	* Adaptador tres, conectado a Adaptador Puente.
