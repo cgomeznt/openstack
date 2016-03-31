@@ -243,15 +243,15 @@ Listo, vamos al nodo controller a  crear una infraestructura de red virtual, rec
  # nova net-list
 
 
-Hasta aqui vamos bien y ya podemos crear una instancia dentro de nuestro OpenStack, para emocianarnos un poco y ver que si funciona.
+Hasta aqui vamos bien y ya podemos crear una instancia dentro de nuestro OpenStack, para emocionarnos un poco y ver que si funciona.
 
 Ejecute el siguiente comando en el nodo controller
 ::
 
 # openstack-launch-instance.sh
 
-Cuando culmine no deje de hacer lo que le indica el script, bueeee...!!! igual lo colocamos aqui para que no se preste inconvenientes.
-En su Host puede editar el archivo  '/etc/hosts' y agregar una linea como la siguiete con la IP que tiene controller
+Cuando culmine no deje de hacer lo que le indica el script, bueeee...!!! igual lo colocamos aquí para que no se preste inconvenientes.
+En su Host puede editar el archivo  '/etc/hosts' y agregar una linea como la siguiente con la IP que tiene controller
 en la eth2, la que esta configurada en el adaptador de puente.
 ::
 
@@ -265,18 +265,18 @@ La URL que capturo o que puede capturar con el siguiente comando
 
 nova get-vnc-console demo-instance1 novnc
 
-Luego desde el Host abra un navegador y coloca la URL que capturo, debera ver algo como la siguiente imagen
+Luego desde el Host abra un navegador y coloca la URL que capturo, deberá ver algo como la siguiente imagen
 
 .. figure:: ../images/urlinstancia.jpg
 
-Cuando inicie sesión en la instancia ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, esto no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al internet, ejecute el siguiente comando en el nodo compute1
+Cuando inicie sesión en la instancia (el usuario es **cirros** y la clave **cubswin:)**) ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, el siguiente comando que vamos a ejecutar no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al Internet, ejecute el siguiente comando en el nodo compute1
 ::
 
 iptables -t nat -A POSTROUTING -o eth2 MASQUERADE
 
-Ahora vamos nuevamente a la instancia y detenemos el ping y lo volvemos a iniciar, ahora si hay respuesta.
+Ahora vamos nuevamente a la instancia, detenemos el ping y lo volvemos a iniciar el ping a openstack.org, ahora si hay respuesta.
 
-tambien puede establecer conexion ssh con la instancia, para eso ejecutamos este comando para obtener la IP pero desde el nodo controller
+También puede establecer conexión ssh con la instancia, para eso ejecutamos este comando para obtener la IP de la instancia, pero desde el nodo controller
 ::
 
 # nova list
