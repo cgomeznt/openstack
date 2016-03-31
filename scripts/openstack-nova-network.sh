@@ -6,6 +6,20 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+
+if [ -f ./.nova-network ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-launch-instance.sh' pero en el controller
+
+##################################################################################################
+"
+exit 0
+fi
+
 if [ "$(hostname)" == "controller" ]; then 
 
 if [ ! -f ./.nova-controller ];then
@@ -14,7 +28,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-nova-controller.sh'
+'. ./openstack-nova-controller.sh'
 
 ##################################################################################################
 "
@@ -22,12 +36,12 @@ exit 1
 fi
 
 
-if [ ! -f ./password-table.sh || ! -f ./admin-openrc.sh ];then
+if [ ! -f ./password-table.sh ] || [ ! -f ./admin-openrc.sh ];then
 echo "
 ##################################################################################################
 
-	No puede hacer este paso debe asegurar que tenga los archvios
-	./password-table.sh y ./admin-openrc.sh
+No puede hacer este paso debe asegurar que tenga los archvios
+./password-table.sh y ./admin-openrc.sh
 
 ##################################################################################################
 "
@@ -37,11 +51,13 @@ fi
 echo "
 ##################################################################################################
 
-	Se va ejecutar el procedimiento en el nodo controllador para activar nova-network
+Se va ejecutar el procedimiento en el nodo controllador para activar nova-network
 
 ##################################################################################################
 "
-# Editamos el archivo /etc/nova/nova.conf para completar las siguientes acciones
+
+# Editamos el archivo /etc/nova/nova.conf para completar las siguientes acciones.
+# no hacemos respaldo porque ya con openstack-nova-controller.sh lo hicimos y estas lineas fueron preparadas.
 sed -e"
 /^#network_api_class.*$/s/^.*$/network_api_class = nova.network.api.API/
 /^#security_group_api.*$/s/^.*$/security_group_api = nova/
@@ -58,18 +74,26 @@ sleep 6
 echo "
 ##################################################################################################
 
-	Ahora debe ejecutar este mismo script 'openstack-nova-network' pero en el nodo compute
+Ahora pasamos con el nodo compute 
+'. ./openstack-inicio.sh'
+'. ./openstack-networking.sh'
+'. ./openstack-network-test.sh'
+'. ./openstack-ntp.sh'
+'. ./openstack-packages.sh'
+'. ./openstack-nova-compute.sh' 
+'. ./openstack-nova-network.sh'y luego
+
+Cuando termine con el nodo compute realice las pruebas 'source admin-openrc.sh && nova service-list'
+debera ver ahi el servicio ahora de compute1
 	
-	Luego de ejecutarlo en el nodo controllador debe crear una infraestructura de red virtual
+Luego de ejecutarlo en el nodo controller debe crear una infraestructura de red virtual
 
-	'source admin-openrc.sh'
-	'nova network-create demo-net --bridge br100 --multi-host T \
-	--fixed-range-v4 203.0.113.24/29'
-	'nova net-list'
+'source admin-openrc.sh'
+'nova network-create demo-net --bridge br100 --multi-host T \
+--fixed-range-v4 203.0.113.24/29'
+'nova net-list'
 
-##################################################################################################
-"
-
+##################################################################################################"
 
 else
 
@@ -79,7 +103,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-nova-compute.sh'
+'. ./openstack-nova-compute.sh'
 
 ##################################################################################################
 "
@@ -89,7 +113,7 @@ fi
 echo "
 ##################################################################################################
 
-	Se va ejecutar el procedimiento en el nodo compute para activar nova-network
+Se va ejecutar el procedimiento en el nodo compute para activar nova-network
 
 ##################################################################################################
 "
@@ -101,6 +125,7 @@ apt-get install nova-network nova-api-metadata -y
 INTERFACE_NAME=$(cat /etc/network/interfaces | awk ' /manual/ {print $2}')
 #$INTERFACE_NAME=$(sed -n 's/iface \(eth[0-9]\).*manual/\1/p' /etc/network/interfaces)
 
+# no hacemos respaldo porque ya con openstack-nova-controller.sh lo hicimos y estas lineas fueron preparadas.
 sed -e"
 /^#network_api_class.*$/s/^.*$/network_api_class = nova.network.api.API/
 /^#security_group_api.*$/s/^.*$/security_group_api = nova/
@@ -124,11 +149,14 @@ service nova-api-metadata restart
 echo "
 ##################################################################################################
 
-	En el nodo controller debe crear una infraestructura de red virtual
+En el nodo controller debe crear una infraestructura de red virtual
 
-	'source admin-openrc.sh'
-	'nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 10.0.3.20/24'
-	'nova net-list'
+'source admin-openrc.sh'
+'nova network-create demo-net --bridge br100 --multi-host T \
+--fixed-range-v4 10.0.3.20/24'
+'nova net-list'
+
+Puede ahora continuar con '. ./openstack-launch-instance'
 
 ##################################################################################################
 "

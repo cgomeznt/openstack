@@ -12,7 +12,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-keystone.sh'
+'. ./openstack-keystone.sh'
 
 ##################################################################################################
 "
@@ -24,7 +24,7 @@ echo "
 ##################################################################################################
 
 No puede hacer este paso debe asegurar que tenga los archvios
-	./password-table.sh y ./admin-openrc.sh
+./password-table.sh y ./admin-openrc.sh
 
 ##################################################################################################
 "
@@ -126,8 +126,8 @@ rm -f /var/lib/glance/glance.sqlite
 echo "
 ##################################################################################################
 
-	La instalacion y configuracion ya culmino, ahora vamos a verificar.
-	Primero vamos a descargar de cirros y de ubuntu unas imagenes para cargarla en glance
+La instalacion y configuracion ya culmino, ahora vamos a verificar.
+Primero vamos a descargar de cirros y de ubuntu unas imagenes para cargarla en glance
 
 ##################################################################################################"
 
@@ -159,7 +159,7 @@ touch ./.glance
 echo -e "
 ##############################################################################################
 
-Realice las pruebas busque mas y vaya preparando el snmp
+Realice las pruebas, busque mas y vaya preparando el snmp
 
 
 Ahora puede continuar con 'openstack-nova-controller.sh'

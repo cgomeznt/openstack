@@ -128,11 +128,54 @@ Realice las pruebas que le indica el script. Se crearon dos archivos en python (
 
 # . openstack-glance.sh
 
+::
 
+# . openstack-nova-controller.sh
 
+::
+
+# . openstack-nova-network.sh
+
+Ahora debemos pasar al nodo compute1.
 
 
 nodo compute1
 ++++++++++++++++++
+::
+
+# cd openstack/scripts/
+
+::
+
+# sudo su
+
+::
+
+# openstack-inicio.sh
+
+::
+
+# openstack-networking.sh
+
+::
+
+# openstack-network-test.sh
+
+::
+
+# openstack-ntp.sh
+
+::
+
+# openstack-packages.sh
+
+::
+
+# openstack-nova-compute.sh
+
+::
+
+# openstack-nova-network.sh
+
 
 Continuamos trabajando...!!!

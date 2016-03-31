@@ -12,22 +12,35 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-glance.sh'
+'. ./openstack-glance.sh'
 
 ##################################################################################################
 "
 exit 1
 fi
 
-if [ ! -f ./password-table.sh || ! -f ./admin-openrc.sh ];then
+if [ ! -f ./password-table.sh ] || [ ! -f ./admin-openrc.sh ];then
 echo "
 ##################################################################################################
 
 No puede hacer este paso debe asegurar que tenga los archvios
-	./password-table.sh y ./admin-openrc.sh
+./password-table.sh y ./admin-openrc.sh
 
 ##################################################################################################
 "
+fi
+
+if [ -f ./.nova-controller ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-nova-network-controller.sh' si solo si, esta en el controller
+
+##################################################################################################
+"
+exit 0
 fi
 
 source ./password-table.sh
@@ -138,15 +151,24 @@ touch ./.nova-controller
 echo -e "
 ##############################################################################################
 
-	Realice las pruebas busque mas y vaya preparando el snmp
+Realice las pruebas busque mas y vaya preparando el snmp
 
-	NOTA: /var/lib/nova/CA should be owned by nova
+NOTA: /var/lib/nova/CA should be owned by nova
 
-	Ahora vamos con el nodo compute 'openstack-nova-compute.sh' y luego
+Ahora '. ./openstack-nova-network.sh'
 
-	realice las pruebas 'source admin-openrc.sh && nova service-list'
-	
-	Ahora continuamos con 'openstack-nova-network-controller.sh'
+Luego pasamos con el nodo compute 
+'. ./openstack-inicio.sh'
+'. ./openstack-networking.sh'
+'. ./openstack-network-test.sh'
+'. ./openstack-ntp.sh'
+'. ./openstack-packages.sh'
+'. ./openstack-nova-compute.sh' 
+'. ./openstack-nova-network.sh'y luego
+
+Cuando termine con el nodo compute realice las pruebas 'source admin-openrc.sh && nova service-list'
+debera ver ahi el servicio ahora de compute1
+
 
 ##############################################################################################
 "
