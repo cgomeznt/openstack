@@ -6,32 +6,32 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-if [ ! -f ./.package ];then
+if [ ! -f ./.packages ];then
 echo "
 ##################################################################################################
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-package.sh'
+'. ./openstack-package.sh'
 
 ##################################################################################################
 "
 exit 1
 fi
 
-if [ ! -f ./password-table.sh || ! -f ./admin-openrc.sh ];then
+if [ ! -f ./password-table.sh ] || [ ! -f ./admin-openrc.sh ];then
 echo "
 ##################################################################################################
 
 No puede hacer este paso debe asegurar que tenga los archvios
-	./password-table.sh y ./admin-openrc.sh
+./password-table.sh y ./admin-openrc.sh
 
 ##################################################################################################
 "
 fi
 
 # Instalamos los paquetes nova-compute sysfsutils
-apt-get install nova-compute sysfsutils
+apt-get install nova-compute sysfsutils -y
 
 sleep 5
 
@@ -42,6 +42,8 @@ cp -dp /etc/nova/nova.conf.out /etc/nova/nova.conf
 else
 cp -dp /etc/nova/nova.conf /etc/nova/nova.conf.out
 fi
+
+source ./password-table.sh
 
 # Editamos el archivo /etc/glance/glance-api.conf para completar las siguientes acciones
 echo -e "
@@ -99,13 +101,13 @@ if  [ "$(egrep -c '(vmx|svm)' /proc/cpuinfo)" != "0" ]; then
 echo "
 #################################################################################################
 
-	Su CPU soporta extensiones KVM. 
+Su CPU soporta extensiones KVM. 
 
-	Realice las pruebas busque mas y vaya preparando el snmp
+Realice las pruebas busque mas y vaya preparando el snmp
 
-	NOTA: /var/lib/nova/CA should be owned by nova
+NOTA: /var/lib/nova/CA should be owned by nova
 	
-	'source admin-openrc.sh && nova service-list'
+'source admin-openrc.sh && nova service-list'
 
 ##################################################################################################
 "
@@ -119,15 +121,15 @@ sed -e "
 echo "
 ##################################################################################################
 
-	Su CPU NO soporta extensiones KVM. deberia investigue antes de continuar
+Su CPU NO soporta extensiones KVM. deberia investigue antes de continuar
 
-	Usted puede modificar /etc/nova/nova-compute.conf (una vez instalado) para emular esta aceleracion:
+Usted puede modificar /etc/nova/nova-compute.conf (una vez instalado) para emular esta aceleracion:
 
-	[libvirt]
-	...
-	virt_type = qemu
+[libvirt]
+...
+virt_type = qemu
 
-	NOTA: /var/lib/nova/CA should be owned by nova
+NOTA: /var/lib/nova/CA should be owned by nova
 
 ##################################################################################################
 "
@@ -144,13 +146,13 @@ touch ./.nova-compute
 echo -e "
 ##############################################################################################
 
-	Realice las pruebas busque mas y vaya preparando el snmp
+Realice las pruebas busque mas y vaya preparando el snmp
 	
-	'source admin-openrc.sh && nova service-list' en el controller
+'source admin-openrc.sh && nova service-list' en el controller
 
-	NOTA: /var/lib/nova/CA should be owned by nova
+NOTA: /var/lib/nova/CA should be owned by nova
 
-	Ahora puede continuar con 'openstack-nova-network-compute.sh'
+Ahora puede continuar con 'openstack-nova-network-compute.sh'
 
 ##############################################################################################
 "

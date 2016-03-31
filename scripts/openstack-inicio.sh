@@ -89,7 +89,10 @@ este script en los demas servidores
 
 se cambio el nombre del equipo a $(cat /etc/hostname), debe reiniciar este equipo.
 
-Despues de reiniciar ejecutamos '. ./openstack-security.sh'
+Despues de reiniciar ejecutamos 
+'. ./openstack-security.sh' si esta en el nodo controller
+o
+'. ./openstack-networking.sh' si esta en el nodo compute
 
 ##############################################################################################"
 

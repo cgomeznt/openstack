@@ -78,6 +78,7 @@ Ahora pasamos con el nodo compute
 '. ./openstack-inicio.sh'
 '. ./openstack-networking.sh'
 '. ./openstack-network-test.sh'
+'. ./openstack-server-test.sh'
 '. ./openstack-ntp.sh'
 '. ./openstack-packages.sh'
 '. ./openstack-nova-compute.sh' 

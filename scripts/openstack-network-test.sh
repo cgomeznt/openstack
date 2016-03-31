@@ -20,7 +20,6 @@ exit 1
 fi
 
 # Hacemos los test de conectividad
-echo -e '\e[33;1m amarillo \e[m'
 echo  " " 
 echo -e '\e[33;1m Haciendo ping al nodo controller \e[m'
 ping -c 4 controller
@@ -39,10 +38,10 @@ touch ./.network-test
 echo "
 ###############################################################################################################
 
-	Debe ver las respuestas de los ping al controller, network, compute y openstack.org, si ve algo malo no continue 
-	y solvente la falla. Siempre este muy pendiente del gateway, de los DNS y del NTP
+Debe ver las respuestas de los ping al controller, network, compute y openstack.org, si ve algo malo no continue 
+y solvente la falla. Siempre este muy pendiente del gateway, de los DNS y del NTP
 
-	Ejecute ahora '. ./openstack-server-test.sh'
+Ejecute ahora '. ./openstack-server-test.sh'
 
 ###############################################################################################################
 "

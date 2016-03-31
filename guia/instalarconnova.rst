@@ -46,17 +46,15 @@ nodo controller
 ++++++++++++++++++
 ::
 
-# cd openstack/scripts/
-
-::
-
 # sudo su
 
 ::
 
-# . openstack-inicio.sh
+# cd openstack/scripts/
 
 ::
+
+# . openstack-inicio.sh
 
 Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/
 ::
@@ -94,7 +92,7 @@ Luego que configure la ip 10.0.0.11 en le eth0 continue con::
 Es logico que el nodo compute1 no responda porque aun no lo hemos configurado y el nodo network porque no lo utilizaremos, pero controller y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_
 ::
 
-# . openstack-server-test.sh
+# openstack-server-test.sh
 
 ::
 
@@ -136,6 +134,11 @@ Realice las pruebas que le indica el script. Se crearon dos archivos en python (
 
 # . openstack-nova-network.sh
 
+Debemos copiarnos el archivo que contiene los password al nodo compute1
+::
+
+# scp password-table.sh usuario@compute1:/tmp
+
 Ahora debemos pasar al nodo compute1.
 
 
@@ -143,23 +146,60 @@ nodo compute1
 ++++++++++++++++++
 ::
 
-# cd openstack/scripts/
+# sudo su
+
 
 ::
 
-# sudo su
+# cd openstack/scripts/
 
 ::
 
 # openstack-inicio.sh
 
+Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/
 ::
 
 # openstack-networking.sh
 
+Edite el archivo /etc/network/interfaces y configure la eth0 y la eth1 para que quede como en la guía de OpenStack, pero antes capturen con ifconfig eth1 que IP tiene porque luego la utilizaremos::
+
+	# vi /etc/network/interfaces
+		auto eth0
+		iface eth0 inet static
+		address 10.0.0.31
+		netmask 255.255.255.0
+
+		auto eth1
+		iface eth1 inet manual
+		  up ip link set dev $IFACE up
+		  down ip link set dev $IFACE down
+
 ::
 
+	# ifdown eth0 && ifup eth0 && ifconfig eth0
+		eth0  Link encap:Ethernet  HWaddr 08:00:27:8b:e9:1b  
+		      inet addr:10.0.0.31  Bcast:10.0.0.255  Mask:255.255.255.0
+		      inet6 addr: fe80:a00:28ff:fe8b:e90b/64 Scope:Link
+		      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+		      RX packets:35 errors:0 dropped:0 overruns:0 frame:0
+		      TX packets:61 errors:0 dropped:0 overruns:0 carrier:0
+		      collisions:0 txqueuelen:1000 
+		      RX bytes:11970 (11.9 KB)  TX bytes:18522 (18.5 KB)
+
+Lo siguiente deberia funcionar pero aun no descubro porque falla, por lo tanto y muy mala practica reinicio el nodo compute1
+::
+
+	# ifdown eth1 && ifup eth1 && ifconfig eth1
+
+Luego que configure la ip 10.0.0.31 en le eth0 y la eth1 la colocamos en manual, continue con::
+
 # openstack-network-test.sh
+
+El nodo network no responde porque no lo utilizaremos, pero controller, compute1 y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_
+::
+
+# openstack-server-test.sh
 
 ::
 
@@ -169,13 +209,42 @@ nodo compute1
 
 # openstack-packages.sh
 
+Debes reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/luego de reiniciar siempre, tambien debe verificar la conectividad de red y el NTP
+::
+
+Recuerdan el archivo password-table.sh que copiamos del nodo controller a compute1, pues ahora debemos colocarlo en la ruta en doden se encuentran todos los scripts
+::
+
+# mv /tmp/password-table.sh .
+
+Ahora si podemos instalar los paquetes de nova-compute
 ::
 
 # openstack-nova-compute.sh
 
+Vamos un momento al nodo controller para verificar que todo marche bien y que ya este viendo al nodo compute1, les recuerdo, cuidado con las claves que se utilizaron en /etc/nova/nova.conf siempre hay errores con eso y pendiente con rabbitMQ-server
+::
+
+ # /etc/init.d/rabbitmq-server restart
+ # . openstack-nova-restart-service.sh
+ # source admin-openrc.sh && nova service-list
+
+::
+
+Regresamos al nodo compute1 para ejecutar
 ::
 
 # openstack-nova-network.sh
+
+Listo, vamos al nodo controller a  crear una infraestructura de red virtual, recuerden que en la interface eth1 la configuramos como manual y que se les habia dicho que guardaran la IP que le estaba entregando el DHCP del NAT, imaginen que dio 10.0.3.15 (la adaptan a lo que ustedes le dio)
+::
+
+ # source admin-openrc.sh
+ # nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 10.0.3.20/29
+ # nova net-list
+
+
+
 
 
 Continuamos trabajando...!!!

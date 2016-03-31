@@ -6,6 +6,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ "$(hostname)" == "controller" ]; then
 if [ ! -f ./.security ];then
 echo "
 ##################################################################################################
@@ -17,6 +18,7 @@ No puede hacer este paso debe ejecutar primero
 ##################################################################################################
 "
 exit 1
+fi
 fi
 
 # Respaldo del hosts
