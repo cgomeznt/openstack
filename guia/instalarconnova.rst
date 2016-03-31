@@ -69,23 +69,23 @@ Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scr
 
 Edite el archivo /etc/network/interfaces y configure la eth0 para que quede como en la guía de OpenStack::
 
-# vi /etc/network/interfaces
-	auto eth0
-	iface eth0 inet static
-	address 10.0.0.11
-	netmask 255.255.255.0
+	# vi /etc/network/interfaces
+		auto eth0
+		iface eth0 inet static
+		address 10.0.0.11
+		netmask 255.255.255.0
 
 ::
 
-# ifdown eth0 && ifup eth0 && ifconfig eth0
-	eth0  Link encap:Ethernet  HWaddr 08:00:27:8b:e8:0b  
-          inet addr:10.0.0.11  Bcast:10.0.0.255  Mask:255.255.255.0
-          inet6 addr: fe80:a00:27ff:fe8b:e80b/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:35 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:61 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:11970 (11.9 KB)  TX bytes:18522 (18.5 KB)
+	# ifdown eth0 && ifup eth0 && ifconfig eth0
+		eth0  Link encap:Ethernet  HWaddr 08:00:27:8b:e8:0b  
+		      inet addr:10.0.0.11  Bcast:10.0.0.255  Mask:255.255.255.0
+		      inet6 addr: fe80:a00:27ff:fe8b:e80b/64 Scope:Link
+		      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+		      RX packets:35 errors:0 dropped:0 overruns:0 frame:0
+		      TX packets:61 errors:0 dropped:0 overruns:0 carrier:0
+		      collisions:0 txqueuelen:1000 
+		      RX bytes:11970 (11.9 KB)  TX bytes:18522 (18.5 KB)
 
 Luego que configure la ip 10.0.0.11 en le eth0 continue con::
 
