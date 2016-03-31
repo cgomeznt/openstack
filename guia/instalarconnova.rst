@@ -29,9 +29,9 @@ para que copie los script en los servidores, tambien puede ir abriendo cada scri
 
 Iniciamos las dos (2) maquinas virtuales creadas con virtualbox. Recuerden que solo le instalamos  Ubuntu con openssh-server y git, las tarjetas de redes no estan configuradas porque mas adelante lo haremos.
 
-Iniciamos en cada una de ellas y vemos cual es la dirección ip que obtuvieron en el eth2 la cual esta configurada en el `**adaptador de puente** <maquinasvirtuales.rst>`_, esto lo hacemos para poder conectarnos por medio de ssh desde el Host hacia ellas. Recuerde que en este adaptador usted tiene conexión hacia el internet (Tomando en cuenta que usted ya tiene conexión a internet con su Host).
+Iniciamos en cada una de ellas y vemos cual es la dirección ip que obtuvieron en el eth2 la cual esta configurada en el `adaptador de puente <maquinasvirtuales.rst>`_, esto lo hacemos para poder conectarnos por medio de ssh desde el Host hacia ellas. Recuerde que en este adaptador usted tiene conexión hacia el internet (Tomando en cuenta que usted ya tiene conexión a internet con su Host).
 
-Por lo normal siempre la gente tiene problemas con la configuración del route y de los DNS, por eso vamos a realizar primero unas pruebas en los servidores. Imaginemos que en el eth2 que esta por el `**adaptador de puente** <maquinasvirtuales.rst>`_ entrega IP del segmento 192.168.1.0/24 y que el default gateway debe ser 192.168.1.1 y los DNS deberia ser 192.168.1.1 si este cumple este papel, sino podemos colocar los DNS de google 8.8.8.8, `vamos a verificar <verificargwdns.rst>`_
+Por lo normal siempre la gente tiene problemas con la configuración del route y de los DNS, por eso vamos a realizar primero unas pruebas en los servidores. Imaginemos que en el eth2 que esta por el `adaptador de puente <maquinasvirtuales.rst>`_ entrega IP del segmento 192.168.1.0/24 y que el default gateway debe ser 192.168.1.1 y los DNS deberia ser 192.168.1.1 si este cumple este papel, sino podemos colocar los DNS de google 8.8.8.8, `vamos a verificar <verificargwdns.rst>`_
 
 Copiar el proyecto en cada una de ellas con la técnica que usted prefiera, puede hacerlo con git en cada una de ellas::
 
@@ -243,7 +243,49 @@ Listo, vamos al nodo controller a  crear una infraestructura de red virtual, rec
  # nova net-list
 
 
+Hasta aqui vamos bien y ya podemos crear una instancia dentro de nuestro OpenStack, para emocianarnos un poco y ver que si funciona.
 
+Ejecute el siguiente comando en el nodo controller
+::
+
+# openstack-launch-instance.sh
+
+Cuando culmine no deje de hacer lo que le indica el script, bueeee...!!! igual lo colocamos aqui para que no se preste inconvenientes.
+En su Host puede editar el archivo  '/etc/hosts' y agregar una linea como la siguiete con la IP que tiene controller
+en la eth2, la que esta configurada en el adaptador de puente.
+::
+
+	vi /etc/hosts
+	192.168.1.11	controller
+	192.168.1.21	network
+	192.168.1.31	compute1
+
+La URL que capturo o que puede capturar con el siguiente comando
+::
+
+nova get-vnc-console demo-instance1 novnc
+
+Luego desde el Host abra un navegador y coloca la URL que capturo, debera ver algo como la siguiente imagen
+.. figure:: ../images/urlinstancia.jpg
+
+Cuando inicie sesión en la instancia ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, esto no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al internet, ejecute el siguiente comando en el nodo compute1
+::
+
+iptables -t nat -A POSTROUTING -o eth2 MASQUERADE
+
+Ahora vamos nuevamente a la instancia y detenemos el ping y lo volvemos a iniciar, ahora si hay respuesta.
+
+tambien puede establecer conexion ssh con la instancia, para eso ejecutamos este comando para obtener la IP pero desde el nodo controller
+::
+
+# nova list
+
+Luego nos vamos al nodo compute1 y ejecutamos (con la IP que usted capturo)
+::
+
+ssh cirros@10.0.3.18
+
+vamos muy bien...!!!
 
 
 Continuamos trabajando...!!!
