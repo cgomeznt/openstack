@@ -269,10 +269,10 @@ Luego desde el Host abra un navegador y coloca la URL que capturo, deberá ver a
 
 .. figure:: ../images/urlinstancia.jpg
 
-Cuando inicie sesión en la instancia (el usuario es **cirros** y la clave **cubswin:)**) ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, el siguiente comando que vamos a ejecutar no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al Internet, ejecute el siguiente comando en el nodo compute1
+Cuando inicie sesión en la instancia ( el usuario es **cirros** y la clave **cubswin:)** ) ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, el siguiente comando que vamos a ejecutar no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al Internet, ejecute el siguiente comando en el nodo compute1
 ::
 
-iptables -t nat -A POSTROUTING -o eth2 MASQUERADE
+# iptables -t nat -A POSTROUTING -o eth2 MASQUERADE
 
 Ahora vamos nuevamente a la instancia, detenemos el ping y lo volvemos a iniciar el ping a openstack.org, ahora si hay respuesta.
 
@@ -284,7 +284,7 @@ También puede establecer conexión ssh con la instancia, para eso ejecutamos es
 Luego nos vamos al nodo compute1 y ejecutamos (con la IP que usted capturo)
 ::
 
-ssh cirros@10.0.3.18
+# ssh cirros@10.0.3.18
 
 vamos muy bien...!!!
 
