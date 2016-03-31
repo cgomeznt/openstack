@@ -15,7 +15,7 @@ Cada una de las maquinas virtuales les otorgamos
 	* Adaptador uno, conectado a Red Interna.
 	* Adaptador dos, conectado a NAT.
 	* Adaptador tres, conectado a Adaptador Puente.
-* Se le instalo a cada maquina openssh-server.
+* Se le instalo a cada maquina openssh-server y git.
 
 Es más que suficiente, tenga mucho cuidado con la configuración de los adaptadores de red esto es vital.
 

@@ -26,8 +26,7 @@ else
 cp -dp /etc/hosts /etc/hosts.out
 fi
 
-echo 
-"##############################################################################################################
+echo "##############################################################################################################
 
 Se creo un respaldo de /etc/hosts en /etc/hosts.out
 
@@ -45,7 +44,7 @@ echo "
 
 touch ./.networking
 
-echo "##############################################################################################################
+echo "
 
 Edite el archivo /etc/network/interfaces para que le quede como lo indica la guia de OpenStack y depende de la 
 architectura seleccionada.

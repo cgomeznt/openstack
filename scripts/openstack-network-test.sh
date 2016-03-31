@@ -20,9 +20,18 @@ exit 1
 fi
 
 # Hacemos los test de conectividad
+echo -e '\e[33;1m amarillo \e[m'
+echo  " " 
+echo -e '\e[33;1m Haciendo ping al nodo controller \e[m'
 ping -c 4 controller
+echo " " 
+echo -e '\e[33;1m Haciendo ping al nodo network \e[m'
 ping -c 4 network
+echo " " 
+echo -e '\e[33;1m Haciendo ping al nodo compute1 \e[m'
 ping -c 4 compute1
+echo " " 
+echo -e '\e[33;1m Haciendo ping a openstack.org \e[m'
 ping -c 4 openstack.org
 
 touch ./.network-test

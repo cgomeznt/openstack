@@ -12,7 +12,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	'./openstack-packages.sh'
+'. ./openstack-packages.sh'
 
 ##################################################################################################
 "
@@ -25,12 +25,26 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-Ejecute 'openstack-security.sh'
+Ejecute '. ./openstack-security.sh'
 
 ##################################################################################################
 "
 exit 1
 fi
+
+if [ -f ./.database ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-rabbitmq.sh' si solo si, esta en el controller
+
+##################################################################################################
+"
+exit 0
+fi
+
 
 # Instalamos MariaDB
 clear
@@ -133,6 +147,8 @@ Puede verificar 'mysql -u root -p' y luego 'show databases;' o puede validarce c
 'mysql -u nova -p' 'show databases;' 'use nova' 'show tables'
 'mysql -u glance -p' 'show databases;' 'use glance' 'show tables'
 
-Ahora puede continuar con 'openstack-rabbitmq.sh'
+NOTA: Recuerda que las claves estan almacenadas en 'cat password-table.sh'
+
+Ahora puede continuar con '. ./openstack-rabbitmq.sh'
 
 ##############################################################################################"

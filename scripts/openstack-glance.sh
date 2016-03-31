@@ -19,7 +19,7 @@ No puede hacer este paso debe ejecutar primero
 exit 1
 fi
 
-if [ ! -f ./password-table.sh || ! -f ./admin-openrc.sh ];then
+if [ ! -f ./password-table.sh ] || [ ! -f ./admin-openrc.sh ];then
 echo "
 ##################################################################################################
 
@@ -28,6 +28,19 @@ No puede hacer este paso debe asegurar que tenga los archvios
 
 ##################################################################################################
 "
+fi
+
+if [ -f ./.glance ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-nova-glance.sh' si solo si, esta en el controller
+
+##################################################################################################
+"
+exit 0
 fi
 
 source ./password-table.sh
@@ -121,7 +134,11 @@ echo "
 # Descargamos las imagenes
 mkdir /tmp/images
 wget -P /tmp/images http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img
+unset SW
+read -p "Le gustaria descargar la imagen (precise-server-cloudimg-amd64-disk1.img) de 251M [S/n]: " -n 1 SW
+if [ $(echo $SW | grep [Ss] ];then
 wget -P /tmp/images http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img
+fi
 
 source admin-openrc.sh
 
@@ -137,15 +154,15 @@ glance image-create --name "precise-server-cloudimg-amd64" --file /tmp/images/pr
 # Listamos las imagenes disponibles
 glance image-list
 
-touch ./glance
+touch ./.glance
 
 echo -e "
 ##############################################################################################
 
-	Realice las pruebas busque mas y vaya preparando el snmp
+Realice las pruebas busque mas y vaya preparando el snmp
 
 
-	Ahora puede continuar con 'openstack-nova-controller.sh'
+Ahora puede continuar con 'openstack-nova-controller.sh'
 
 ##############################################################################################
 "

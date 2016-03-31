@@ -25,7 +25,7 @@ fi
 # Hacemos el test
 #/usr/sbin/kvm-ok
 
-touch ./server-test
+touch ./.server-test
 
 if  [ "$(egrep -c '(vmx|svm)' /proc/cpuinfo)" != "0" ]; then
 echo "

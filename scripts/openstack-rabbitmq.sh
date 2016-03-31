@@ -12,7 +12,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-database.sh'
+'./openstack-database.sh'
 
 ##################################################################################################
 "
@@ -25,12 +25,26 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	'openstack-security.sh'
+'. ./openstack-security.sh'
 
 ##################################################################################################
 "
 exit 1
 fi
+
+if [ -f ./.rabbitmq ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-keystone.sh' si solo si, esta en el controller
+
+##################################################################################################
+"
+exit 0
+fi
+
 # Instalamos RabbitMQ
 apt-get install rabbitmq-server -y
 
@@ -127,7 +141,7 @@ hello	1
 
 Busca mas alternativas para realizar pruebas y vaya preparando el snmp
 
-Ahora puede continuar con 'openstack-keystone.sh'
+Ahora puede continuar con '. ./openstack-keystone.sh'
 
 ##############################################################################################"
 

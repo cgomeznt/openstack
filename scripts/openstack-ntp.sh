@@ -65,6 +65,7 @@ touch ./.ntp
 echo "
 ##################################################################################################
 
+Debe probar la configuracion de NTP con 'ntpq -c peers && ntpq -c assoc'
 Si la configuracion del NTP esta correcta continue
 
 Ahora ejecute '. ./openstack-openstack-packages.sh'

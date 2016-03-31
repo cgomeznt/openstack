@@ -16,4 +16,12 @@ Arquitectura minima de ejemplo con legacy networking (neutron)— Capa de Servic
 
 .. figure:: ../images/neutron/Minimal_architecture_Neutron_2.png
 
+
+Ya teniendo claro esta infraestructura vamos a encender las dos maquinas virtuales y nos conectarnos a ellas con ssh, recuerde descargar el proyecto::
+
+	$ git clone https://github.com/cgomeznt/openstack.git
+
+para que copie los script en los servidores, tambien puede ir abriendo cada script copiar el contenido y luego crear el script en los servidores. (utilice la tecnica que usted prefiera) 
+
+
 Continuamos trabajando...!!!

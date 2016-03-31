@@ -12,7 +12,7 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	 './openstack-rabbitmq.sh'
+'. ./openstack-rabbitmq.sh'
 
 ##################################################################################################
 "
@@ -25,11 +25,25 @@ echo "
 
 No puede hacer este paso debe ejecutar primero
 
-	'openstack-security.sh'
+'. ./openstack-security.sh'
 
 ##################################################################################################
 "
 fi
+
+if [ -f ./.keystone ];then
+echo "
+##################################################################################################
+
+Usted ya ejecuto este script debe continuar con 
+
+'. ./openstack-nova-glance.sh' si solo si, esta en el controller
+
+##################################################################################################
+"
+exit 0
+fi
+
 
 source ./password-table.sh
 
@@ -70,13 +84,12 @@ source ./password-table.sh
 
 # Editamos el archivo /etc/keystone/keystone.conf para completar las siguientes acciones
 sed -e "
-/^#admin_token=.*$/s/^.*$/admin_token = $OS_SERVICE_TOKEN/
-/^connection=.*$/s/^.*$/connection=mysql:\/\/keystone:$KEYSTONE_DBPASS@controller\/keystone/
-/^#provider=.*$/s/^.*$/provider=keystone.token.providers.uuid.Provider/
-/^#driver=keystone.token.*$/s/^.*$/driver=keystone.token.persistence.backends.sql.Token/
-/^#driver=keystone.contrib.revoke.*$/s/^.*$/driver=keystone.contrib.revoke.backends.kvs.Revoke/
-/^#verbose=.*$/s/^.*$/verbose=True/
-" -i /etc/keystone/keystone.conf
+/^#admin_token.*$/s/^.*$/admin_token = $OS_SERVICE_TOKEN/
+/^connection.*$/s/^.*$/connection=mysql:\/\/keystone:$KEYSTONE_DBPASS@controller\/keystone/
+/^#provider.*$/s/^.*$/provider = keystone.token.providers.uuid.Provider/
+/keystone.token.persistence.backends/s/^.*$/driver = keystone.token.persistence.backends.sql.Token/
+/keystone.contrib.revoke.*$/s/^.*$/driver = keystone.contrib.revoke.backends.kvs.Revoke/
+/^#verbose.*$/s/^.*$/verbose=True/" -i /etc/keystone/keystone.conf
 
 # Poblar la base de datos de servicio de identidad 
 su -s /bin/sh -c "keystone-manage db_sync" keystone
@@ -166,7 +179,7 @@ echo -e "
 
 Realice las pruebas busque mas y vaya preparando el snmp
 
-El ADMIN_PASS puede sacarlo de esta forma: 'grep -i admin_pass ./password-table.sh
+El ADMIN_PASS puede sacarlo de esta forma: 'grep -i admin_pass ./password-table.sh'
 'keystone --os-tenant-name admin --os-username admin --os-password ADMIN_PASS \
 --os-auth-url http://controller:35357/v2.0 token-get'
 'keystone --os-tenant-name admin --os-username admin --os-password ADMIN_PASS \
@@ -181,7 +194,7 @@ Ahora hacemos las pruebas cargando las variables 'source ./admin-openrc.sh'
  && keystone endpoint-list'
 
 
-Ahora puede continuar con 'openstack-network.sh'
+Ahora puede continuar con '. ./openstack-glance.sh' si es en el nodo controller
 
 ##############################################################################################
 "
