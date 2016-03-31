@@ -266,6 +266,7 @@ La URL que capturo o que puede capturar con el siguiente comando
 nova get-vnc-console demo-instance1 novnc
 
 Luego desde el Host abra un navegador y coloca la URL que capturo, debera ver algo como la siguiente imagen
+
 .. figure:: ../images/urlinstancia.jpg
 
 Cuando inicie sesión en la instancia ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, esto no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al internet, ejecute el siguiente comando en el nodo compute1
