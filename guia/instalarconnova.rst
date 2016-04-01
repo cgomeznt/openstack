@@ -286,7 +286,7 @@ Luego nos vamos al nodo compute1 y ejecutamos (con la IP que usted capturo)
 
 # ssh cirros@10.0.3.18
 
-Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentiran mas comodos, en el nodo controller.
+Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentirán más cómodos, en el nodo controller.
 ::
 
 # openstack-horizon.sh
@@ -305,6 +305,7 @@ Cuidado el codigo generado es aleatorio, no sera igual al que usted tiene.
 
 .. figure:: ../images/horizon/admin.jpg
 
+Hasta aqui vemos que si funciona realmente las guías de `OpenStack <http://docs.openstack.org/kilo/install-guide/install/apt/content/>`_  
 vamos muy bien...!!!
 
 

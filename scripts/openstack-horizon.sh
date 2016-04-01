@@ -95,7 +95,7 @@ echo "
 
 Verificamos la operacion
 
-Aceda dashboard usando un navegado web http://controller/horizon 
+Aceder al dashboard usando un navegado web http://controller/horizon 
 
 Autentique usando las credenciales de admin o demo
 
