@@ -112,7 +112,7 @@ tambien puede establecer conexion ssh con la instancia
 obtenga la IP de la instancia
 'ssh cirros@10.0.3.18' ejecute esto en el nodo compute1
 
-Puede ahora continuar con '. ./openstack-horizon'
+Puede ahora continuar con '. ./openstack-horizon.sh'
 
 ##################################################################################################
 "

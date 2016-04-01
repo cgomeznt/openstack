@@ -286,6 +286,25 @@ Luego nos vamos al nodo compute1 y ejecutamos (con la IP que usted capturo)
 
 # ssh cirros@10.0.3.18
 
+Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentiran mas comodos, en el nodo controller.
+::
+
+# openstack-horizon.sh
+
+En nuestro Host accedemos al dashboard usando un navegado web http://controller/horizon , vera algo como esto.
+
+.. figure:: ../images/horizon/start.jpg
+
+Autentique usando las credenciales de admin o demo, para obtener la clave seria en el nodo controller
+::
+
+	# awk -F= '/ADMIN/ {print $2}' password-table.sh 
+	95cd5b195e855fc0bdbe
+
+Cuidado el codigo generado es aleatorio, no sera igual al que usted tiene.
+
+.. figure:: ../images/horizon/admin.jpg
+
 vamos muy bien...!!!
 
 
