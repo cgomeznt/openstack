@@ -6,6 +6,18 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+
+if [ "$(hostname)" != "compute1" ]; then
+echo "
+##################################################################################################
+
+Este script solo se debe ejecutar en el nodo compute1
+
+##################################################################################################"
+exit 1
+fi
+
+
 if [ ! -f ./.packages ];then
 echo "
 ##################################################################################################
@@ -148,7 +160,7 @@ echo -e "
 
 Realice las pruebas busque mas y vaya preparando el snmp
 	
-'source admin-openrc.sh && nova service-list' en el controller
+En el nodo controller ejecute 'source admin-openrc.sh && nova service-list' 
 
 NOTA: /var/lib/nova/CA should be owned by nova
 

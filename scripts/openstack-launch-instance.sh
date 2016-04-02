@@ -7,6 +7,16 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 
+if [ "$(hostname)" != "controller" ]; then
+echo "
+##################################################################################################
+
+Este script solo se debe ejecutar en el nodo controller
+
+##################################################################################################"
+exit 1
+fi
+
 if [ -f ./.launch-instance ];then
 echo "
 ##################################################################################################
@@ -74,9 +84,11 @@ DEMO_NET_ID=$(nova net-list | awk '/demo/ {print $2}')
 echo -e '\n\e[33;1m Grupos de seguridad disponibles \e[m' 
 nova secgroup-list
 
-# Lanzamos la instancia
+# Lanzamos la instancia, esto demora...!!!
 nova boot --flavor m1.tiny --image $NAME_IMAGE --nic net-id=$DEMO_NET_ID \
   --security-group default --key-name demo-key demo-instance1
+
+sleep 7
 
 # Chequeamos el estatus de las instancias
 echo -e '\n\e[33;1m Chequear el estatus de las instancias \e[m'
@@ -99,18 +111,16 @@ touch ./.launch-instance
 echo "
 ##################################################################################################
 
-La URL que capturo, puede colocarla en un navegador que tenga acceso a controller para que haga la 
+La URL que capturo, si no la capturo ejecute 'nova get-vnc-console demo-instance1 novnc' 
+puede colocarla en un navegador que tenga acceso a controller para que haga la 
 conexion con la instancia.
-
-En su Host puede editar '/etc/hosts' y agregar una linea como la siguiete con la IP que tiene controller
-en la eth2, la que esta configurada en el adaptador de puente.
 
 Luego desde el Host abre un navegador y coloca la URL que capturo.
 
 tambien puede establecer conexion ssh con la instancia 
-'nova list' ejecute esto en el nodo controller
+ejecute esto en el nodo controller 'nova list' 
 obtenga la IP de la instancia
-'ssh cirros@10.0.3.18' ejecute esto en el nodo compute1
+ejecute esto en el nodo compute1 'ssh cirros@10.0.3.18' 
 
 Puede ahora continuar con '. ./openstack-horizon.sh'
 

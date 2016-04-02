@@ -20,27 +20,105 @@ Arquitectura mínima de ejemplo con legacy networking (nova-network)— Capa de 
 .. figure:: ../images/nova/Minimal_architecture_nova-network_2.png
 
 
-Ya teniendo claro esta infraestructura vamos a encender las dos maquinas virtuales y nos conectarnos a ellas con ssh, recuerde descargar el proyecto::
+Ya teniendo claro esta infraestructura vamos a encender las dos maquinas virtuales y nos conectamos a ellas. (Deben tener los tres adaptadores de red como se indico, sino `vea esto <maquinasvirtuales.rst>`_
 
-	$ git clone https://github.com/cgomeznt/openstack.git
+De ahora en adelante, vamos a llamar a los servidores **nodo controller** y **nodo compute1**.
 
-para que copie los script en los servidores, tambien puede ir abriendo cada script copiar el contenido y luego crear el script en los servidores. (utilice la tecnica que usted prefiera) 
+vamos a conectarnos al que sera el **nodo controller** para configurar la IPs, por comodidad siempre vamos hacer primero ``sudo su``::
 
+# sudo su
 
-Iniciamos las dos (2) maquinas virtuales creadas con virtualbox. Recuerden que solo le instalamos  Ubuntu con openssh-server y git, las tarjetas de redes no estan configuradas porque mas adelante lo haremos.
+Editamos el /etc/network/interface para editar el adaptador eth2, para que quede como se muestra a continuación::
 
-Iniciamos en cada una de ellas y vemos cual es la dirección ip que obtuvieron en el eth2 la cual esta configurada en el `adaptador de puente <maquinasvirtuales.rst>`_, esto lo hacemos para poder conectarnos por medio de ssh desde el Host hacia ellas. Recuerde que en este adaptador usted tiene conexión hacia el internet (Tomando en cuenta que usted ya tiene conexión a internet con su Host).
+ # vi /etc/network/interface
+ auto eth2
+ iface eth2 inet dhcp
 
-Por lo normal siempre la gente tiene problemas con la configuración del route y de los DNS, por eso vamos a realizar primero unas pruebas en los servidores. Imaginemos que en el eth2 que esta por el `adaptador de puente <maquinasvirtuales.rst>`_ entrega IP del segmento 192.168.1.0/24 y que el default gateway debe ser 192.168.1.1 y los DNS deberia ser 192.168.1.1 si este cumple este papel, sino podemos colocar los DNS de google 8.8.8.8, `vamos a verificar <verificargwdns.rst>`_
+Iniciamos el adaptador eth2::
 
-Copiar el proyecto en cada una de ellas con la técnica que usted prefiera, puede hacerlo con git en cada una de ellas::
+ # ifdown eth2 && ifup eth2 && ifconfig eth2
 
-	$ git clone https://github.com/cgomeznt/openstack.git
+Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estatica con la IP que capturo, esto lo hacemos para tener una administracion más facil a lo largo del laboratorio y para hacer las pruebas de forma más rapida::
 
+# vi /etc/network/interface
+ auto eth2
+ iface eth2 inet static
+ address 192.168.1.31
+ netmask 255.255.255.0
+ gateway 192.168.1.1
+ dns-nameserver 192.168.1.1
 
-De ahora en adelante, vamos a llamar a los servidores nodo controller y nodo compute1. también se dará cuenta que los scripts le estará dando recomendaciones.
+Reiniciamos nuevamente el adaptador eth2::
 
-Comencemos con el que sera nodo controller
+ # ifdown eth2 && ifup eth2 && ifconfig eth2
+
+Probamos el ICMP, debe responder::
+
+# ping -c 4 openstack.org
+
+Vamos hacer lo mismo con el que sera nodo **nodo compute1**::
+
+# sudo su
+
+Editamos el /etc/network/interface para editar el adaptador eth2, para que quede como se muestra a continuación::
+
+ # vi /etc/network/interface
+ auto eth2
+ iface eth2 inet dhcp
+
+Iniciamos el adaptador eth2::
+
+ # ifdown eth2 && ifup eth2 && ifconfig eth2
+
+Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estatica con la IP que capturo::
+
+# vi /etc/network/interface
+ auto eth2
+ iface eth2 inet static
+ address 192.168.1.31
+ netmask 255.255.255.0
+ gateway 192.168.1.1
+ dns-nameserver 192.168.1.1
+
+Reiniciamos nuevamente el adaptador eth2::
+
+ # ifdown eth2 && ifup eth2 && ifconfig eth2
+
+Probamos el ICMP, debe responder::
+
+# ping -c 4 openstack.org
+
+Ahora en nuestro Host, vamos editar el /etc/hosts y agregamos estas dos lineas::
+
+ # vi /etc/hosts
+ 192.168.1.11	controller
+ 192.168.1.31	compute1
+
+Realizamos una prueba de conectividad desde el Host hacia **nodo controller** y **nodo compute1** ::
+
+# for i in controller compute1; do ping -c 4 $i; done
+
+Vamos instalar dos paquetes en **nodo controller** y **nodo compute1** que son openssh-server y git::
+
+# apt-get update && apt-get install openssh-server git -y
+
+Ya desde nuestro Host podemos conectarnos al **nodo controller** y al **nodo compute1** con un mismo terminal en pestañas distintas (en el ssh utilizo **usuario** porque ese fue el nombre que se le dio al usuario en la instalación de ubuntu)::
+
+# ssh usuario@controller
+
+::
+
+# ssh usuario@compute1
+
+Importante recordar que todo los comando que ejecutemos seran dentro del perfil del usuario, ejemplo /home/usuario  y todos los scripts en /home/usuario/openstack/scripts
+
+En ambos equipos, **nodo controller** y **nodo compute1** ejecutamos::
+
+$ git clone https://github.com/cgomeznt/openstack.git
+
+Por lo normal siempre la gente tiene problemas con la configuración del route y de los DNS, por eso vamos a realizar primero unas pruebas en los servidores. Imaginemos que en el eth2 que esta por el `adaptador de puente <maquinasvirtuales.rst>`_ entrega IP del segmento 192.168.1.0/24 y que el default gateway debe ser 192.168.1.1 y el DNS deberia ser 192.168.1.1 si el route puede cumplir este papel, sino podemos colocar los DNS de google 8.8.8.8, `vamos a verificar <verificargwdns.rst>`_
+
+Comencemos con el que sera **nodo controller** 
 
 nodo controller
 ++++++++++++++++++
@@ -48,15 +126,15 @@ nodo controller
 
 # sudo su
 
-::
+Todos los scripts deben ser siempre ejecutados en esta ruta::
 
 # cd openstack/scripts/
 
-::
+Ejecute el siguiente script y seleccione (1) para el **nodo controller**::
 
 # . openstack-inicio.sh
 
-Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/
+Debe reiniciar el equipo y luego de iniciar, recuerde hacer ``sudo su`` y cd openstack/scripts/
 ::
 
 # . openstack-security.sh
@@ -65,82 +143,52 @@ Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scr
 
 # . openstack-networking.sh 
 
-Edite el archivo /etc/network/interfaces y configure la eth0 para que quede como en la guía de OpenStack::
-
-	# vi /etc/network/interfaces
-		auto eth0
-		iface eth0 inet static
-		address 10.0.0.11
-		netmask 255.255.255.0
-
-::
-
-	# ifdown eth0 && ifup eth0 && ifconfig eth0
-		eth0  Link encap:Ethernet  HWaddr 08:00:27:8b:e8:0b  
-		      inet addr:10.0.0.11  Bcast:10.0.0.255  Mask:255.255.255.0
-		      inet6 addr: fe80:a00:27ff:fe8b:e80b/64 Scope:Link
-		      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-		      RX packets:35 errors:0 dropped:0 overruns:0 frame:0
-		      TX packets:61 errors:0 dropped:0 overruns:0 carrier:0
-		      collisions:0 txqueuelen:1000 
-		      RX bytes:11970 (11.9 KB)  TX bytes:18522 (18.5 KB)
-
-Luego que configure la ip 10.0.0.11 en le eth0 continué con::
+Continué con::
 
 # . openstack-network-test.sh 
 
 Es lógico que el nodo compute1 no responda porque aun no lo hemos configurado y el nodo network porque no lo utilizaremos, pero controller y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_
-::
 
-# openstack-server-test.sh
+El siguiente script le indicara que su CPU NO soporta extensiones KVM, es porque estan virtualizados con virtualbox, omita ese mensaje. Continué::
 
-::
+# . openstack-server-test.sh
+
+En el **nodo controller** se configura los NTP atomicos de Ubuntu y en **nodo compute1** se configura al **nodo controller** como su NTP. Continué con::
 
 # . openstack-ntp.sh
 
-::
+Ahora vamos a seleccionar la versión de OpenStack que vamos a utilizar, en este caso seleccione (3) para la versión de kilo, se va conectar a los repositorios de Ubuntu para hacer la actualizacion de la distro. Continué con::
 
 # . openstack-packages.sh
 
-Debes reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/luego de reiniciar siempre, también debe verificar la conexión de red y el NTP
+Debe reiniciar el equipo y luego de iniciar, recuerde hacer ``sudo su`` y cd openstack/scripts/ debe también verificar la conexión de red y el NTP
 
-
-Mucho cuidado con la clave que le va pedir, deber recordarla porque esa clave es del manejador de base de datos MariaDB. Luego el te pedirá que coloques el password de root (recuerda es del manejador de base de datos MariaDB) cuando te pregunte si quieres cambiar el password le dice que NO y al resto de las opciones le dice que Yes. Cuando te pregunte nuevamente por la clave de root (recuerda es del manejador de base de datos MariaDB) se la suministras. No deje de hacer las pruebas que te indica el script
+Ahora se va instalar el manejador de base de datos MariaDB, debe tener mucho cuidado con la clave que coloque, debe recordarla porque esa clave es del manejador de base de datos de MariaDB. Luego le pedirá que coloques el password de root (recuerda es del manejador de base de datos de MariaDB), cuando le pregunte si quieres cambiar el password usted debe indicar que NO y al resto de las opciones le dice que Yes. Cuando le pregunte nuevamente por la clave de root (recuerda es del manejador de base de datos de MariaDB) se la suministras. No deje de hacer las pruebas que te indica el script
 ::
 
 # . openstack-database.sh
 
-::
+Continué con::
 
 # . openstack-rabbitmq.sh
 
-Realice las pruebas que le indica el script. Se crearon dos archivos en python (send.py y recived.py) que son muy útiles para resolver fallas con rabbitMQ-server, para darle una idea puede ejecutar recived.py en el controller para que se quede escuchando todas las peticiones y desde su equipo Host puede ejecutar send.py (claro en send.py debe editarlo y donde dice controller colocar la IP del controller y en "credentials = pika.PlainCredentials('guest', 'AQUI VA LA CLAVE')", recuerde que las claves esta en "cat password-table.sh". Si llegara a fallar reinicie el servicio de rabbitMQ-server
-::
-
-# /etc/init.d/rabbitmq-server restart
-
-
-Vamos a continuar
-::
+Realice las pruebas que le indica el script. Se crearon dos archivos en python (send.py y recived.py) que son muy útiles para resolver fallas con rabbitMQ-server, para darle una idea puede ejecutar recived.py en el controller para que se quede escuchando todas las peticiones y desde su equipo Host puede ejecutar send.py (claro en send.py debe editarlo y donde dice controller colocar la IP del controller y en "credentials = pika.PlainCredentials('guest', 'AQUI VA LA CLAVE')", recuerde que las claves esta en "cat password-table.sh". Si llegara a fallar reinicie el servicio de rabbitMQ-server. Continué con::
 
 # . openstack-keystone.sh
 
-::
+De ahora en adelante cada vez que reinicie el **nodo controller** y requiera ejecutar comandos de OpenStack debe ir a openstack/scripts y luego ejecutar ``source ./admin-openrc.sh`` no lo olvide...!!!
+
+Instalaremos glance que es donde se almacenan las imagens, cuando culmine el script podra ejecutar ``glance image-list`` Continué con::
 
 # . openstack-glance.sh
 
-::
+Instalamos nova. Continué con::
 
 # . openstack-nova-controller.sh
 
-::
+Configuramos nova-network. Continué con::
 
 # . openstack-nova-network.sh
-
-Debemos copiarnos el archivo que contiene los password al nodo compute1
-::
-
-# scp password-table.sh usuario@compute1:/tmp
 
 Ahora debemos pasar al nodo compute1.
 
@@ -151,151 +199,108 @@ nodo compute1
 
 # sudo su
 
-
-::
+Todos los scripts deben ser siempre ejecutados en esta ruta::
 
 # cd openstack/scripts/
 
-::
+Ejecute el siguiente script y seleccione (3) para el **nodo compute1**::
 
-# openstack-inicio.sh
+# . openstack-inicio.sh
 
-Debe reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/
-::
+Debe reiniciar el equipo y luego de iniciar, recuerde hacer ``sudo su`` y cd openstack/scripts/::
 
-# openstack-networking.sh
+# . openstack-networking.sh 
 
-Edite el archivo /etc/network/interfaces y configure la eth0 y la eth1 para que quede como en la guía de OpenStack, pero antes capturen con ifconfig eth1 que IP tiene porque luego la utilizaremos::
+Continué con::
 
-	# vi /etc/network/interfaces
-		auto eth0
-		iface eth0 inet static
-		address 10.0.0.31
-		netmask 255.255.255.0
+# . openstack-network-test.sh 
 
-		auto eth1
-		iface eth1 inet manual
-		  up ip link set dev $IFACE up
-		  down ip link set dev $IFACE down
+El nodo network no responde porque no lo utilizaremos, pero controller, compute1 y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_ este scipt pudiera ejecutarlo nuevamente en el **nodo controller** porque tiene que dar este mismo resultado
 
-::
-
-	# ifdown eth0 && ifup eth0 && ifconfig eth0
-		eth0  Link encap:Ethernet  HWaddr 08:00:27:8b:e9:1b  
-		      inet addr:10.0.0.31  Bcast:10.0.0.255  Mask:255.255.255.0
-		      inet6 addr: fe80:a00:28ff:fe8b:e90b/64 Scope:Link
-		      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-		      RX packets:35 errors:0 dropped:0 overruns:0 frame:0
-		      TX packets:61 errors:0 dropped:0 overruns:0 carrier:0
-		      collisions:0 txqueuelen:1000 
-		      RX bytes:11970 (11.9 KB)  TX bytes:18522 (18.5 KB)
-
-Lo siguiente debería funcionar pero aun no descubro porque falla, por lo tanto y muy mala practica reinicio el nodo compute1 (no libera la IP de eth1)
-::
-
-	# ifdown eth1 && ifup eth1 && ifconfig eth1
-
-Luego que configure la ip 10.0.0.31 en le eth0 y la eth1 la colocamos en manual, continué con::
-
-# openstack-network-test.sh
-
-El nodo network no responde porque no lo utilizaremos, pero controller, compute1 y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_
-::
+El siguiente script le indicara que su CPU NO soporta extensiones KVM, es porque estan virtualizados con virtualbox, omita ese mensaje. Continué con::
 
 # openstack-server-test.sh
 
-::
+En el **nodo controller** se configura los NTP atomicos de Ubuntu y en el **nodo compute1** se configura al **nodo controller** como su NTP. Continué con::
 
-# openstack-ntp.sh
+# . openstack-ntp.sh
 
-::
+Ahora vamos a seleccionar la versión de OpenStack que vamos a utilizar, en este caso seleccione (3) para la versión de kilo, se va conectar a los repositorios de Ubuntu para hacer la actualizacion de la distro. Continué con::
 
-# openstack-packages.sh
+# . openstack-packages.sh
 
-Debes reiniciar el equipo y siempre recuerde hacer ``sudo su`` y cd openstack/scripts/luego de reiniciar siempre, también debe verificar la conexión de red y el NTP
-::
+Debemos copiarnos el archivo password-table.sh que esta en el ***nodo controller** (contiene los password) al **nodo compute1**, no conectamos al ***nodo controller** (antes no lo habiamos hecho porque en el **nodo compute1** no estaba configurada los adaptadores de red). Ejecute::
 
-Recuerdan el archivo password-table.sh que copiamos del nodo controller a compute1, pues ahora debemos colocarlo en la ruta en doden se encuentran todos los scripts
-::
+# scp password-table.sh usuario@compute1:/tmp
+
+A continuacion nos conectamos nuevamente al **nodo compute1**, el archivo copiado en password-table.sh en "/tmp" lo movemos a la ruta donde se encuentran todos los scripts "/openstack/scripts". Continué con::
 
 # mv /tmp/password-table.sh .
 
-Ahora si podemos instalar los paquetes de nova-compute
-::
+Debe reiniciar el equipo y luego de iniciar, recuerde hacer ``sudo su`` y cd openstack/scripts/ debe también verificar la conexión de red y el NTP
 
-# openstack-nova-compute.sh
+Ahora si podemos instalar los paquetes de nova en **nodo compute1**::
 
-Vamos un momento al nodo controller para verificar que todo marche bien y que ya este viendo al nodo compute1, les recuerdo, cuidado con las claves que se utilizaron en /etc/nova/nova.conf siempre hay errores con eso y pendiente con rabbitMQ-server
-::
+# . openstack-nova-compute.sh
+
+Vamos un momento al **nodo controller** para verificar que todo marche bien y que ya este viendo al **nodo compute1**, les recuerdo, cuidado con las claves que se utilizaron en /etc/nova/nova.conf siempre hay errores con eso y pendiente con rabbitMQ-server::
 
  # source admin-openrc.sh && nova service-list
 
-Regresamos al nodo compute1 para ejecutar
-::
+Regresamos al **nodo compute1** para ejecutar::
 
-# openstack-nova-network.sh
+# . openstack-nova-network.sh
 
-Listo, vamos al nodo controller a  crear una infraestructura de red virtual, recuerden que en el nodo compute1 la interface eth1 la configuramos como manual y que se les había dicho que guardaran la IP que le estaba entregando el DHCP del NAT, imaginen que dio 10.0.3.15 (la adaptan a lo que ustedes le dio)
-::
+Listo ya terminamos por los momentos en el **nodo compute1**
+
+nodo controller
+++++++++++++++++++
+
+Vamos al **nodo controller** para crear una infraestructura de red virtual::
 
  # source admin-openrc.sh
  # nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 10.0.3.20/29
  # nova net-list
 
-
 Hasta aqui vamos bien y ya podemos crear una instancia dentro de nuestro OpenStack, para emocionarnos un poco y ver que si funciona.
 
-Ejecute el siguiente comando en el nodo controller
-::
+Ejecute el siguiente comando en el **nodo controller**, pulse Enter cuando le pregunte "Enter file in which to save the key (/root/.ssh/id_rsa):", nuevamente Enter cuando le pregunte "Enter passphrase (empty for no passphrase):" y con "Enter same passphrase again:" un ultmo Enter.::
 
-# openstack-launch-instance.sh
+# . openstack-launch-instance.sh
 
-Cuando culmine no deje de hacer lo que le indica el script, bueeee...!!! igual lo colocamos aquí para que no se preste inconvenientes.
-En su Host puede editar el archivo  '/etc/hosts' y agregar una linea como la siguiente con la IP que tiene controller
-en la eth2, la que esta configurada en el adaptador de puente.
-::
+Cuando culmine no deje de hacer lo que le indica el script. La URL que capturo o que puede capturar con el siguiente comando::
 
-	vi /etc/hosts
-	192.168.1.11	controller
-	192.168.1.21	network
-	192.168.1.31	compute1
-
-La URL que capturo o que puede capturar con el siguiente comando
-::
-
-nova get-vnc-console demo-instance1 novnc
+# nova get-vnc-console demo-instance1 novnc
 
 Luego desde el Host abra un navegador y coloca la URL que capturo, deberá ver algo como la siguiente imagen
 
 .. figure:: ../images/urlinstancia.jpg
 
-Cuando inicie sesión en la instancia ( el usuario es **cirros** y la clave **cubswin:)** ) ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, el siguiente comando que vamos a ejecutar no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al Internet, ejecute el siguiente comando en el nodo compute1
+Cuando inicie sesión en la instancia ( el usuario es **cirros** y la clave **cubswin:)** ) ejecute un ping a openstack.org y vera que resuelve el DNS pero no responde el ICMP, el siguiente comando que vamos a ejecutar no esta bien, pero lo hacemos solo para enrutar el trafico de las IPs asignadas a las instancias por la eth2 que si tiene salida al Internet, ejecute el siguiente comando en el **nodo compute1**
 ::
 
-# iptables -t nat -A POSTROUTING -o eth2 MASQUERADE
+# iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE
 
 Ahora vamos nuevamente a la instancia, detenemos el ping y lo volvemos a iniciar el ping a openstack.org, ahora si hay respuesta.
 
-También puede establecer conexión ssh con la instancia, para eso ejecutamos este comando para obtener la IP de la instancia, pero desde el nodo controller
-::
+También puede establecer conexión ssh con la instancia, para eso ejecutamos este comando para obtener la IP de la instancia, pero desde el **nodo controller**::
 
 # nova list
 
-Luego nos vamos al nodo compute1 y ejecutamos (con la IP que usted capturo)
+Luego nos vamos al **nodo compute1** y ejecutamos (con la IP que usted capturo)
 ::
 
 # ssh cirros@10.0.3.18
 
-Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentirán más cómodos, en el nodo controller.
-::
+Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentirán más cómodos, en el **nodo controller** ::
 
-# openstack-horizon.sh
+# . openstack-horizon.sh
 
 En nuestro Host accedemos al dashboard usando un navegado web http://controller/horizon , vera algo como esto.
 
 .. figure:: ../images/horizon/start.jpg
 
-Autentique usando las credenciales de admin o demo, para obtener la clave seria en el nodo controller
+Autentique usando las credenciales de admin o demo, para obtener la clave seria en el **nodo controller**
 ::
 
 	# awk -F= '/ADMIN/ {print $2}' password-table.sh 

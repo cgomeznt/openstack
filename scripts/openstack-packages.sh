@@ -111,7 +111,7 @@ echo "
 
 Debes reiniciar el equipo
 
-Ahora ejecute '. ./openstack-database.sh'
+Luego ejecute '. ./openstack-database.sh'
 
 ##################################################################################################
 "
@@ -121,7 +121,10 @@ echo "
 
 Debes reiniciar el equipo
 
-Ahora ejecute '. ./openstack-nova-compute.sh'
+Debe asegurar que desde el nodo controller se copie password-table.sh a el nodo compute1 
+en la ruta que se encuentran todos los scripts
+
+Luego ejecute '. ./openstack-nova-compute.sh'
 
 ##################################################################################################
 "

@@ -44,66 +44,49 @@ echo "
 10.0.0.21	network
 10.0.0.31	compute1" >> /etc/hosts
 
+# Respaldo del interface
+if [ -f /etc/network/interfaces.out ]; then
+cp -dp /etc/network/interfaces.out /etc/network/interfaces
+else
+cp -dp /etc/network/interfaces /etc/network/interfaces.out
+fi
+
+# Le asignamos las IPs correspondiente al controller y al compute1
+if [ "$(hostname)" == "controller" ]; then
+sed -e "
+/^iface eth0 inet dhcp.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.11 \n netmask 255.255.255.0/" -i /etc/network/interfaces
+else
+sed -e "
+/eth1/d
+/^iface eth0 inet dhcp.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.31 \n netmask 255.255.255.0 \
+\n\n # The external network interface \n \
+auto eth1 \n \
+iface eth1 inet manual \n \
+up ip link set dev \$IFACE up\n \
+down ip link set dev \$IFACE down \n/" -i /etc/network/interfaces
+fi
+
+# ifdown --exclude=lo -a && sudo ifup --exclude=lo -a
+ifdown eth0 && ifup eth0
+ifdown eth1 && ifup eth1
+
 touch ./.networking
 
+clear
 echo "
-
-Edite el archivo /etc/network/interfaces para que le quede como lo indica la guia de OpenStack y depende de la 
-architectura seleccionada.
-
-Para que la configuracion quede como esto:
-
-------------------------En el controller------------------------
-	# loopback
-	auto lo
-	iface lo inet loopback
-
-	# The primary interface and manage network
-	auto eth0
-	iface eth0 inet static
-	  address 10.0.0.11
-	  netmask 255.255.255.0
-------------------------En el network------------------------
-	# loopback
-	auto lo
-	iface lo inet loopback
-
-	# The primary interface and manage network
-	auto eth0
-	iface eth0 inet static
-	  address 10.0.0.21
-	  netmask 255.255.255.0
-
-	auto eth1
-	iface eth1 inet manual
-	  up ip link set dev \$IFACE up
-	  down ip link set dev \$IFACE down
-------------------------En el compute1------------------------
-	# loopback
-	auto lo
-	iface lo inet loopback
-
-	# The primary interface and manage network
-	auto eth0
-	iface eth0 inet static
-	  address 10.0.0.31
-	  netmask 255.255.255.0
-
-	auto eth1
-	iface eth1 inet manual
-	  up ip link set dev \$IFACE up
-	  down ip link set dev \$IFACE down
-------------------------------------------------------------------------
-
-Se edito el archivo /etc/hosts y se creo un respaldo /etc/hosts.out
+###############################################################################################################
+Se edito el archivo /etc/hosts y se creo un respaldo /etc/hosts.out, se agregaron estas lineas.
 
 	10.0.0.11	controller
 	10.0.0.21	network
 	10.0.0.31	compute1
 
-Si tiene mas maquinas agreguelas aqui de forma manual en el  /etc/hosts .
+Se edito el archivo /etc/network/interfaces y se creo un respaldo /etc/network/interfaces.out, se modificaron estas lineas.
 
-Despues 'ifdown --exclude=lo -a && sudo ifup --exclude=lo -a'.
+	auto eth0
+	iface eth0 inet static 
+	 address 10.0.0.11 
+	 netmask 255.255.255.0
 
 Hacemos un test del servidor con '. ./openstack_network_test.sh'
 

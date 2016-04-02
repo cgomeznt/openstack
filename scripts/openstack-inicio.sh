@@ -80,6 +80,7 @@ case $typeserver in
 esac
 
 touch ./.inicio
+clear
 echo  " "
 echo -e "
 ##############################################################################################
@@ -92,7 +93,7 @@ se cambio el nombre del equipo a $(cat /etc/hostname), debe reiniciar este equip
 Despues de reiniciar ejecutamos 
 '. ./openstack-security.sh' si esta en el nodo controller
 o
-'. ./openstack-networking.sh' si esta en el nodo compute
+'. ./openstack-networking.sh' si esta en el nodo compute1
 
 ##############################################################################################"
 

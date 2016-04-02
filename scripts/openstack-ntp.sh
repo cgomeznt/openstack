@@ -56,8 +56,11 @@ service ntp restart
 sleep 4
 
 # verificamos 
+echo " "
+echo -e '\e[33;1m Se ejecuta ntpq -c peers \e[m'
 ntpq -c peers
-
+echo " "
+echo -e '\e[33;1m Se ejecuta ntpq -c assoc \e[m'
 ntpq -c assoc
 
 touch ./.ntp
@@ -66,6 +69,8 @@ echo "
 ##################################################################################################
 
 Debe probar la configuracion de NTP con 'ntpq -c peers && ntpq -c assoc'
+
+En el nodo controller se configura los NTP atomicos de Ubuntu y en compute1 se configura al nodo controller como su NTP
 Si la configuracion del NTP esta correcta continue
 
 Ahora ejecute '. ./openstack-openstack-packages.sh'

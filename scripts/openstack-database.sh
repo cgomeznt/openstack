@@ -6,6 +6,17 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+
+if [ "$(hostname)" != "controller" ]; then
+echo "
+##################################################################################################
+
+Este script solo se debe ejecutar en el nodo controller
+
+##################################################################################################"
+exit 1
+fi
+
 if [ ! -f ./.packages ];then
 echo "
 ##################################################################################################
@@ -48,14 +59,16 @@ fi
 
 # Instalamos MariaDB
 clear
-echo "
+echo -e '\e
 ##############################################################################################
 
 Configurando MariaDB / MySQL .  Se le preguntara el password de root password para continuar
 no olvide el password
 
-##############################################################################################"
+##############################################################################################\e[m'
+
 sleep 5
+echo -e '\n\e[33;1m Debe  \e[m'
 apt-get install mariadb-server python-mysqldb -y
 
 # Se configura para que escuche las peticiones por la IP administrativa

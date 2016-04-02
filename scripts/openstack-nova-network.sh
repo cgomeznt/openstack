@@ -6,7 +6,6 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-
 if [ -f ./.nova-network ];then
 echo "
 ##################################################################################################
@@ -74,7 +73,7 @@ sleep 6
 echo "
 ##################################################################################################
 
-Ahora pasamos con el nodo compute 
+Ahora pasamos con el nodo compute1.
 '. ./openstack-inicio.sh'
 '. ./openstack-networking.sh'
 '. ./openstack-network-test.sh'
@@ -83,11 +82,13 @@ Ahora pasamos con el nodo compute
 '. ./openstack-packages.sh'
 '. ./openstack-nova-compute.sh' 
 '. ./openstack-nova-network.sh'y luego
+Debemos copiarnos el archivo password-table.sh que esta en el nodo controller (contiene los password) al nodo compute1
+desde el nodo controller hacemos 'scp password-table.sh usuario@compute1:/tmp'
 
-Cuando termine con el nodo compute realice las pruebas 'source admin-openrc.sh && nova service-list'
+Cuando termine con el nodo compute1 realice las pruebas desde el nodo controller 'source admin-openrc.sh && nova service-list'
 debera ver ahi el servicio ahora de compute1
 	
-Luego de ejecutarlo en el nodo controller debe crear una infraestructura de red virtual
+Luego en el nodo controller debe crear una infraestructura de red virtual
 
 'source admin-openrc.sh'
 'nova network-create demo-net --bridge br100 --multi-host T \
@@ -139,8 +140,8 @@ sed -e"
 /^#share_dhcp_address.*$/s/^.*$/share_dhcp_address = True/
 /^#force_dhcp_release.*$/s/^.*$/force_dhcp_release = True/
 /^#flat_network_bridge.*$/s/^.*$/flat_network_bridge = br100/
-/^#flat_interface.*$/s/^.*$/flat_interface = $INTERFACE_NAME/
-/^#public_interface.*$/s/^.*$/public_interface = $INTERFACE_NAME/
+/^#flat_interface.*$/s/^.*$/flat_interface = $INTERFACE_NAME /
+/^#public_interface.*$/s/^.*$/public_interface = $INTERFACE_NAME /
 " -i /etc/nova/nova.conf
 
 # Reiniciamos los servicios

@@ -6,6 +6,16 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+if [ "$(hostname)" != "controller" ]; then
+echo "
+##################################################################################################
+
+Este script solo se debe ejecutar en el nodo controller
+
+##################################################################################################"
+exit 1
+fi
+
 if [ ! -f ./.keystone ];then
 echo "
 ##################################################################################################
@@ -136,7 +146,7 @@ mkdir /tmp/images
 wget -P /tmp/images http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img
 unset SW
 read -p "Le gustaria descargar la imagen (precise-server-cloudimg-amd64-disk1.img) de 251M [S/n]: " -n 1 SW
-if [ $(echo $SW | grep [Ss] ];then
+if [ $(echo $SW | grep [Ss]) ]; then
 wget -P /tmp/images http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img
 fi
 
@@ -146,8 +156,11 @@ source admin-openrc.sh
 glance image-create --name "cirros-0.3.3-x86_64" --file /tmp/images/cirros-0.3.3-x86_64-disk.img \
 --disk-format qcow2 --container-format bare --is-public True --progress
 
+if [ $(echo $SW | grep [Ss]) ]; then
 glance image-create --name "precise-server-cloudimg-amd64" --file /tmp/images/precise-server-cloudimg-amd64-disk1.img \
 --disk-format qcow2 --container-format bare --is-public True --progress
+fi
+
 # glance image-create --name="Ubuntu Precise 12.04 LTS" --location=http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img \
 #--disk-format=qcow2 --container-format=bare --is-public=True  --progress
 
@@ -160,9 +173,10 @@ echo -e "
 ##############################################################################################
 
 Realice las pruebas, busque mas y vaya preparando el snmp
+'glance image-list'
 
 
-Ahora puede continuar con 'openstack-nova-controller.sh'
+Ahora puede continuar con '. /openstack-nova-controller.sh'
 
 ##############################################################################################
 "
