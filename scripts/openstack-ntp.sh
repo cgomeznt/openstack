@@ -53,7 +53,7 @@ fi
 
 service ntp restart
 
-sleep 4
+sleep 6
 
 # verificamos 
 echo " "
@@ -73,7 +73,7 @@ Debe probar la configuracion de NTP con 'ntpq -c peers && ntpq -c assoc'
 En el nodo controller se configura los NTP atomicos de Ubuntu y en compute1 se configura al nodo controller como su NTP
 Si la configuracion del NTP esta correcta continue
 
-Ahora ejecute '. ./openstack-openstack-packages.sh'
+Ahora ejecute '. ./openstack-packages.sh'
 
 ##################################################################################################
 "

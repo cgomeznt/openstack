@@ -31,15 +31,17 @@ No puede hacer este paso debe ejecutar primero
 exit 1
 fi
 
-if [ ! -f ./password-table.sh ] || [ ! -f ./admin-openrc.sh ];then
+if [ ! -f ./password-table.sh ];then
 echo "
 ##################################################################################################
 
-No puede hacer este paso debe asegurar que tenga los archvios
-./password-table.sh y ./admin-openrc.sh
+No puede hacer este paso debe tener el archvios ./password-table.sh, que se encuentra en controller.
+
+Desde controller ejecute 'scp password-table.sh usuario@compute1:/tmp'
 
 ##################################################################################################
 "
+exit 1
 fi
 
 # Instalamos los paquetes nova-compute sysfsutils

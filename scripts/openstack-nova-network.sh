@@ -73,6 +73,9 @@ sleep 6
 echo "
 ##################################################################################################
 
+Debemos copiarnos el archivo password-table.sh que esta en el nodo controller (contiene los password) al nodo compute1
+desde el nodo controller hacemos 'scp password-table.sh usuario@compute1:/tmp'
+
 Ahora pasamos con el nodo compute1.
 '. ./openstack-inicio.sh'
 '. ./openstack-networking.sh'
@@ -82,8 +85,6 @@ Ahora pasamos con el nodo compute1.
 '. ./openstack-packages.sh'
 '. ./openstack-nova-compute.sh' 
 '. ./openstack-nova-network.sh'y luego
-Debemos copiarnos el archivo password-table.sh que esta en el nodo controller (contiene los password) al nodo compute1
-desde el nodo controller hacemos 'scp password-table.sh usuario@compute1:/tmp'
 
 Cuando termine con el nodo compute1 realice las pruebas desde el nodo controller 'source admin-openrc.sh && nova service-list'
 debera ver ahi el servicio ahora de compute1

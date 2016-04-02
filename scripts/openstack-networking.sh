@@ -56,14 +56,12 @@ if [ "$(hostname)" == "controller" ]; then
 sed -e "
 /^iface eth0 inet dhcp.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.11 \n netmask 255.255.255.0/" -i /etc/network/interfaces
 else
+
 sed -e "
-/eth1/d
-/^iface eth0 inet dhcp.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.31 \n netmask 255.255.255.0 \
-\n\n # The external network interface \n \
-auto eth1 \n \
-iface eth1 inet manual \n \
-up ip link set dev \$IFACE up\n \
-down ip link set dev \$IFACE down \n/" -i /etc/network/interfaces
+/eth1/d" -i /etc/network/interfaces
+
+sed -e "
+/^iface eth0 inet.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.31 \n netmask 255.255.255.0 \n\n # The external network interface \n auto eth1 \n iface eth1 inet manual \n up ip link set dev \$IFACE up\n down ip link set dev \$IFACE down \n/" -i /etc/network/interfaces
 fi
 
 # ifdown --exclude=lo -a && sudo ifup --exclude=lo -a

@@ -88,7 +88,10 @@ Aceder al dashboard usando un navegado web http://controller/horizon
 
 Autentique usando las credenciales de admin o demo
 
-Puede ahora continuar con '. ./openstack-'
+para obtener la clave de admin seria en el nodo controller
+
+'awk -F= '/ADMIN/ {print $2}' password-table.sh'
+
 
 ##################################################################################################"
 

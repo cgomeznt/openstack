@@ -68,7 +68,6 @@ no olvide el password
 ##############################################################################################\e[m'
 
 sleep 5
-echo -e '\n\e[33;1m Debe  \e[m'
 apt-get install mariadb-server python-mysqldb -y
 
 # Se configura para que escuche las peticiones por la IP administrativa

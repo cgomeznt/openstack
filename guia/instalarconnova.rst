@@ -43,7 +43,7 @@ Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estati
 	# vi /etc/network/interface
 	 auto eth2
 	 iface eth2 inet static
-	 address 192.168.1.31
+	 address 192.168.1.31 #Aqui coloca la IP que usted capturo
 	 netmask 255.255.255.0
 	 gateway 192.168.1.1
 	 dns-nameserver 192.168.1.1
@@ -75,7 +75,7 @@ Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estati
 	# vi /etc/network/interface
 	 auto eth2
 	 iface eth2 inet static
-	 address 192.168.1.31
+	 address 192.168.1.31 #Aqui coloca la IP que usted capturo
 	 netmask 255.255.255.0
 	 gateway 192.168.1.1
 	 dns-nameserver 192.168.1.1
@@ -172,7 +172,7 @@ Continué con::
 
 # . openstack-rabbitmq.sh
 
-Realice las pruebas que le indica el script. Se crearon dos archivos en python (send.py y recived.py) que son muy útiles para resolver fallas con rabbitMQ-server, para darle una idea puede ejecutar recived.py en el controller para que se quede escuchando todas las peticiones y desde su equipo Host puede ejecutar send.py (claro en send.py debe editarlo y donde dice controller colocar la IP del controller y en "credentials = pika.PlainCredentials('guest', 'AQUI VA LA CLAVE')", recuerde que las claves esta en "cat password-table.sh". Si llegara a fallar reinicie el servicio de rabbitMQ-server. Continué con::
+Realice las pruebas que le indica el script. Se crearon dos archivos en python (send.py y recived.py) que son muy útiles para resolver fallas con rabbitMQ-server, para darle una idea puede ejecutar recived.py en el controller para que se quede escuchando todas las peticiones y desde su equipo Host puede ejecutar send.py (claro en send.py debe editarlo "credentials = pika.PlainCredentials('guest', 'AQUI VA LA CLAVE')", recuerde que las claves esta en "awk -F= '/RABBIT/ {print $2}' password-table.sh". Si llegara a fallar reinicie el servicio de rabbitMQ-server. Continué con::
 
 # . openstack-keystone.sh
 
@@ -215,7 +215,7 @@ Continué con::
 
 # . openstack-network-test.sh 
 
-El nodo network no responde porque no lo utilizaremos, pero controller, compute1 y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_ este scipt pudiera ejecutarlo nuevamente en el **nodo controller** porque tiene que dar este mismo resultado
+El nodo network no responde porque no lo utilizaremos, pero controller, compute1 y openstack.org si deben responder. `si falla verificar gateway o DNS <verificargwdns.rst>`_ , este scipt pudiera ejecutarlo nuevamente en el **nodo controller** porque tiene que dar este mismo resultado que en **nodo compute1**
 
 El siguiente script le indicara que su CPU NO soporta extensiones KVM, es porque estan virtualizados con virtualbox, omita ese mensaje. Continué con::
 
@@ -229,7 +229,7 @@ Ahora vamos a seleccionar la versión de OpenStack que vamos a utilizar, en este
 
 # . openstack-packages.sh
 
-Debemos copiarnos el archivo password-table.sh que esta en el ***nodo controller** (contiene los password) al **nodo compute1**, no conectamos al ***nodo controller** (antes no lo habiamos hecho porque en el **nodo compute1** no estaba configurada los adaptadores de red). Ejecute::
+Debemos copiarnos el archivo password-table.sh que esta en el ***nodo controller** (contiene los password) al **nodo compute1**, no conectamos al ***nodo controller** (antes no lo habiamos hecho porque en el **nodo compute1** no tenia configurado el adaptadore de red). Ejecute desde el ***nodo controller**::
 
 # scp password-table.sh usuario@compute1:/tmp
 
@@ -243,7 +243,7 @@ Ahora si podemos instalar los paquetes de nova en **nodo compute1**::
 
 # . openstack-nova-compute.sh
 
-Vamos un momento al **nodo controller** para verificar que todo marche bien y que ya este viendo al **nodo compute1**, les recuerdo, cuidado con las claves que se utilizaron en /etc/nova/nova.conf siempre hay errores con eso y pendiente con rabbitMQ-server::
+Vamos un momento al **nodo controller** para verificar que todo marche bien y que ya este viendo al **nodo compute1**, les recuerdo cuidado con las claves que se utilizaron en /etc/nova/nova.conf siempre hay errores con eso y pendiente con rabbitMQ-server, ejecute desde el **nodo controller**::
 
  # source admin-openrc.sh && nova service-list
 
@@ -292,7 +292,7 @@ Luego nos vamos al **nodo compute1** y ejecutamos (con la IP que usted capturo)
 
 # ssh cirros@10.0.3.18
 
-Ahora instalemos el dashboard nombre codigo Horizon, esto sera más grafico y ya los administradores se sentirán más cómodos, en el **nodo controller** ::
+Ahora instalemos el dashboard nombre codigo Horizon, (eta desarrollado con django) esto sera más grafico y ya los administradores se sentirán más cómodos, en el **nodo controller** ::
 
 # . openstack-horizon.sh
 
@@ -300,7 +300,7 @@ En nuestro Host accedemos al dashboard usando un navegado web http://controller/
 
 .. figure:: ../images/horizon/start.jpg
 
-Autentique usando las credenciales de admin o demo, para obtener la clave seria en el **nodo controller**
+Autentique usando las credenciales de admin o demo, para obtener la clave de admin seria en el **nodo controller**
 ::
 
 	# awk -F= '/ADMIN/ {print $2}' password-table.sh 
@@ -313,5 +313,4 @@ Cuidado el codigo generado es aleatorio, no sera igual al que usted tiene.
 Hasta aqui vemos que si funciona realmente las guías de `OpenStack <http://docs.openstack.org/kilo/install-guide/install/apt/content/>`_  
 vamos muy bien...!!!
 
-
-Continuamos trabajando...!!!
+Ya con esto tiene un laboratorio real de `OpenStack <http://docs.openstack.org/kilo/install-guide/install/apt/content/>`_ 
