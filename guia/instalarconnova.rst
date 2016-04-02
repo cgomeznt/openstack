@@ -24,7 +24,7 @@ Ya teniendo claro esta infraestructura vamos a encender las dos maquinas virtual
 
 De ahora en adelante, vamos a llamar a los servidores **nodo controller** y **nodo compute1**.
 
-vamos a conectarnos al que sera el **nodo controller** para configurar la IPs, por comodidad siempre vamos hacer primero ``sudo su``::
+vamos a conectarnos al que sera el **nodo controller** para configurar la IP, por comodidad siempre vamos hacer primero ``sudo su``::
 
 # sudo su
 
@@ -40,13 +40,13 @@ Iniciamos el adaptador eth2::
 
 Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estatica con la IP que capturo, esto lo hacemos para tener una administracion más facil a lo largo del laboratorio y para hacer las pruebas de forma más rapida::
 
-# vi /etc/network/interface
- auto eth2
- iface eth2 inet static
- address 192.168.1.31
- netmask 255.255.255.0
- gateway 192.168.1.1
- dns-nameserver 192.168.1.1
+	# vi /etc/network/interface
+	 auto eth2
+	 iface eth2 inet static
+	 address 192.168.1.31
+	 netmask 255.255.255.0
+	 gateway 192.168.1.1
+	 dns-nameserver 192.168.1.1
 
 Reiniciamos nuevamente el adaptador eth2::
 
@@ -62,9 +62,9 @@ Vamos hacer lo mismo con el que sera nodo **nodo compute1**::
 
 Editamos el /etc/network/interface para editar el adaptador eth2, para que quede como se muestra a continuación::
 
- # vi /etc/network/interface
- auto eth2
- iface eth2 inet dhcp
+	 # vi /etc/network/interface
+	 auto eth2
+	 iface eth2 inet dhcp
 
 Iniciamos el adaptador eth2::
 
@@ -72,13 +72,13 @@ Iniciamos el adaptador eth2::
 
 Volvemos a editar /etc/network/interface para colocar en el eth2 de forma estatica con la IP que capturo::
 
-# vi /etc/network/interface
- auto eth2
- iface eth2 inet static
- address 192.168.1.31
- netmask 255.255.255.0
- gateway 192.168.1.1
- dns-nameserver 192.168.1.1
+	# vi /etc/network/interface
+	 auto eth2
+	 iface eth2 inet static
+	 address 192.168.1.31
+	 netmask 255.255.255.0
+	 gateway 192.168.1.1
+	 dns-nameserver 192.168.1.1
 
 Reiniciamos nuevamente el adaptador eth2::
 
@@ -90,9 +90,9 @@ Probamos el ICMP, debe responder::
 
 Ahora en nuestro Host, vamos editar el /etc/hosts y agregamos estas dos lineas::
 
- # vi /etc/hosts
- 192.168.1.11	controller
- 192.168.1.31	compute1
+	 # vi /etc/hosts
+	 192.168.1.11	controller
+	 192.168.1.31	compute1
 
 Realizamos una prueba de conectividad desde el Host hacia **nodo controller** y **nodo compute1** ::
 
