@@ -61,7 +61,7 @@ case $verOpenStack in
 		 echo -e '\n\e[33;1m Bien...!!! confirmo icehouse \e[m'
 		 apt-get clean
 		 # instalamos la llave
-		 apt-get install python-software-properties
+		 apt-get install python-software-properties -y
 		 add-apt-repository cloud-archive:icehouse
 		 # Actualizamo y hacemos un upgrade de Ubuntu
 		 apt-get update && apt-get dist-upgrade -y

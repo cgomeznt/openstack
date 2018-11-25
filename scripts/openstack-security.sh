@@ -4,33 +4,18 @@
 # openssl rand -hex 10
 # vamos a guardar la tabla de password en el archivo passwd.out para luego optener de ahi las claves
 
+source ../funciones/funciones-genericas
+source ../mensajes/mensajes-genericos
+
+
 # Verificar que se ejecute el script con root
-if [ "$(id -u)" != "0" ]; then
-	echo "Debe ser root para ejecutar los script." 1>&2
-	exit 1
-fi
+VerificaIdRoot
 
-if [ "$(hostname)" != "controller" ]; then
-echo "
-##################################################################################################
+# Verifica que sea el nodo controller ..!!
+VerificaNodoController
 
-Este script solo se debe ejecutar en el nodo controller
-
-##################################################################################################"
-exit 1
-fi
-
-if [ ! -f ./.inicio ];then
-echo "
-##################################################################################################
-
-No puede hacer este paso debe ejecutar primero
-
-'. ./openstack-inicio.sh'
-
-##################################################################################################"
-exit 1
-fi
+# Verifica que se ejecutara primero openstack-inicio.sh
+VerificaArchivoDeControl "./.inicio"
 
 # Password para root de mysql o mariadb
 rootmysql="export rootmysql"
@@ -131,15 +116,7 @@ $TROVE_DBPASS
 $TROVE_PASS
 EOF
 
+# Crea el archivo de control para saber que ya se ejecuto este script
 touch ./.security
-echo "
-###############################################################################################################
 
-Se creo el archivo 'password-table.sh' con todas las claves como lo indica la guia de OpenStack en el
-capitulo de Security.
-
-Ejecute ahora '. ./openstack-networking.sh'
-
-###############################################################################################################
-
-"
+MuestraMensaje "$SECURITY_1"

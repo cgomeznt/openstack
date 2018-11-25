@@ -59,13 +59,13 @@ fi
 
 # Instalamos MariaDB
 clear
-echo -e '\e
+echo -e '\e[33;1m
 ##############################################################################################
 
 Configurando MariaDB / MySQL .  Se le preguntara el password de root password para continuar
 no olvide el password
 
-##############################################################################################\e[m'
+############################################################################################## \e[m'
 
 sleep 5
 apt-get install mariadb-server python-mysqldb -y
@@ -88,24 +88,24 @@ service mysql restart
 
 sleep 6
 
-echo "
+echo '\e[33;1m
 ##############################################################################################
 
 Ahora vamos a ejecutar el mysql_secure_installation para aumentar los niveles de seguridad
 
-##############################################################################################"
+############################################################################################## \e[m'
 # secure mysql
 mysql_secure_installation
 
 # Se crearan cada una de las base de datos para los servicios.
 source ./password-table.sh
 
-echo "
+echo '\e[33;1m
 ##############################################################################################
 
-Se le va pedir la clave de root que usted coloco para el manejador de Base de Datos
+Clave de root que escribio anteriormente para el manejador de Base de Datos
 
-##############################################################################################"
+############################################################################################## \e[m'
 
 mysql -u root -p << EOF
 CREATE DATABASE keystone;

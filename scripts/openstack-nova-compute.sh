@@ -166,7 +166,7 @@ En el nodo controller ejecute 'source admin-openrc.sh && nova service-list'
 
 NOTA: /var/lib/nova/CA should be owned by nova
 
-Ahora puede continuar con 'openstack-nova-network-compute.sh'
+Ahora puede continuar con '. ./openstack-nova-network.sh'
 
 ##############################################################################################
 "

@@ -1,10 +1,20 @@
 #!/bin/bash
 
+source ../funciones/funciones-genericas
+source ../mensajes/mensajes-genericos
+source ../funciones/funciones-network-test
+source ../mensajes/mensajes-network-test
+
 # Verificar que se ejecute el script con root
-if [ "$(id -u)" != "0" ]; then
-	echo "Debe ser root para ejecutar los script." 1>&2
+VerificaIdRoot
+
+# Verifica el archivo de control
+VerificaArchivoDeControl "./.networking"
+if [ $? -eq 0 ];then
+	MuestraMensaje "$VerificaArchivoDeControl"
 	exit 1
 fi
+MuestraMensaje "$VerificaArchivoDeControl"
 
 if [ ! -f ./.networking ];then
 echo "

@@ -1,0 +1,34 @@
+#!/bin/bash
+## Funciones del script openstack-inicio.sh
+
+function ValidarVerUbuntu {
+	if [ "14.04" == "$(lsb_release -a 2>/dev/null | awk '/Release/ {print $2}')" ]; then
+		clear
+		echo -e "\n\e[33;1m $ValidarVerUbuntu_1 \e[m"
+
+	else
+		echo -e "\n\e[33;1m $ValidarVerUbuntu_2 \e[m"
+		exit 1
+	fi
+}
+
+function ValidarTipoServidor {
+	unset typeserver
+	until [ "$typeserver" == "1" ] || [ "$typeserver" == "2" ] || [ "$typeserver" == "3" ]
+	do 
+		echo -e '\e[33;1m '
+		read -p "$ValidarTipoServidor" -n 1 typeserver
+		echo -e '\e[33;1m  \e[m'
+	done
+	case $typeserver in
+		"1") echo "controller" > /etc/hostname
+		;;
+		"2") echo "network" > /etc/hostname
+		;;
+		"3") echo "compute1" > /etc/hostname
+		;;
+		*) exit 1	
+		;;
+	esac
+}
+

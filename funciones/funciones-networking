@@ -1,0 +1,35 @@
+#!/bin/bash
+## funciones del scrip openstack-networking.sh
+
+function ModificarHosts {
+sed -e "
+/^127.0.1.1/s/^/\#/
+/^127.0.0.1/s/^/\#/" -i /etc/hosts
+
+echo "
+10.0.0.11	controller
+10.0.0.21	network
+10.0.0.31	compute1" >> /etc/hosts
+}
+
+function EditaInterfacesController {
+sed -e "
+/^iface eth0 inet dhcp.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.11 \n netmask 255.255.255.0/" -i /etc/network/interfaces
+}
+
+function EditaInterfacesNetwork {
+sed -e "
+/eth1/d" -i /etc/network/interfaces
+
+sed -e "
+/^iface eth0 inet.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.21 \n netmask 255.255.255.0 \n\n # The external network interface \n auto eth1 \n iface eth1 inet manual \n up ip link set dev \$IFACE up\n down ip link set dev \$IFACE down \n/" -i /etc/network/interfaces
+}
+
+
+function EditaInterfacesCompute1 {
+sed -e "
+/eth1/d" -i /etc/network/interfaces
+
+sed -e "
+/^iface eth0 inet.*$/s/^.*$/iface eth0 inet static \n address 10.0.0.31 \n netmask 255.255.255.0 \n\n # The external network interface \n auto eth1 \n iface eth1 inet manual \n up ip link set dev \$IFACE up\n down ip link set dev \$IFACE down \n/" -i /etc/network/interfaces
+}

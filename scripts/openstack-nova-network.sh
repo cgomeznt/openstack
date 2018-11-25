@@ -156,7 +156,7 @@ En el nodo controller debe crear una infraestructura de red virtual
 
 'source admin-openrc.sh'
 'nova network-create demo-net --bridge br100 --multi-host T \
---fixed-range-v4 10.0.3.20/29'
+--fixed-range-v4 10.0.3.24/29'
 'nova net-list'
 
 Puede ahora continuar con '. ./openstack-launch-instance'

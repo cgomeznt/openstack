@@ -1,0 +1,63 @@
+#!/bin/bash
+## Funciones Genericas
+
+function VerificaIdRoot {
+	# Verificar que se ejecute el script con root
+	if [ "$(id -u)" != "0" ]; then
+		echo "Debe ser root para ejecutar los script." 1>&2
+		exit 1
+	fi
+}
+
+function PressAnyKey {
+	echo -e '\n\e[33;1m '
+	read -p "$PressAnyKey" -n 1
+	echo -e '\e[33;1m  \e[m'
+	clear
+}
+
+function MuestraMensaje {
+	echo -e "\e[33;1m $1 \e[m"
+}
+
+function RespaldoArchivo {
+	echo -e "\e[33;1m $RespaldoArchivo $1 \e[m"
+	if [ -f $1.out ]; then
+		cp -dp $1.out $1
+	else
+		cp -dp $1 $1.out
+	fi
+}
+
+function VerificaNodoController {
+	if [ "$(hostname)" == "controller" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+function VerificaNodoNetwork {
+	if [ "$(hostname)" != "network" ]; then
+		MuestraMensaje "$NoEsNetwork"
+		exit 1
+	else
+		return 0
+	fi
+}
+
+function VerificaNodoCompute1 {
+	if [ "$(hostname)" != "compute1" ]; then
+		MuestraMensaje "$NoEsCompute1"
+		exit 1
+	else
+		return 0
+	fi
+}
+
+function VerificaArchivoDeControl {
+	if [ ! -f $1 ];then
+		MuestraMensaje "$EjecutarPrimero $1"
+		exit 1		
+	fi
+}

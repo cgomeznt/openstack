@@ -1,0 +1,10 @@
+## mensajes del script openstack-network-test.sh
+
+VerificaArchivoDeControl="
+##################################################################################################
+
+No puede hacer este paso debe ejecutar primero
+
+'. ./openstack-networking.sh'
+
+##################################################################################################"

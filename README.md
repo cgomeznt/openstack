@@ -30,6 +30,7 @@ git clone https://github.com/cgomeznt/openstack.git
 Bueno...!!! continuaremos 
 
 
+
 [vea también este link](http://instalandoyconfigurandouncorreo.blogspot.com/)
 
 
