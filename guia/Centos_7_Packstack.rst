@@ -63,7 +63,7 @@ Paso 3: crea un archivo de respuestas packstack
 +++++++++++++++++++++++++++++++++++++++++++++++
 
 
-Necesitamos generar un archivo de configuración que se utilizará para instalar OpenStack Cloud con Packstack. Este archivo tiene información como servicios para instalar, configuración de almacenamiento, redes e.t.c.
+Necesitamos generar un archivo de configuración que se utilizará para instalar OpenStack Cloud con Packstack. Este archivo tiene información como servicios para instalar, configuración de almacenamiento, redes e.t.c.::
 
 	$ packstack --gen-answer-file /root/answers.txt
 	Packstack changed given value  to required value /root/.ssh/id_rsa
@@ -429,7 +429,7 @@ Y grupo básico de seguridad::
 Paso 8: Cree una clave privada y agregue imágenes Glance
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Cree una nueva clave para su cuenta o use una existente.
+Cree una nueva clave para su cuenta o use una existente.::
 
 	$ ssh-keygen -q -N "" 
 	$ openstack keypair create --public-key=~/.ssh/id_rsa.pub adminkey 
