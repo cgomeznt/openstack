@@ -1,6 +1,8 @@
 
 ¿Cómo implementar OpenStack Cloud privado en CentOS? OpenStack es una popular plataforma de software libre y de código abierto para construir nubes públicas y privadas. Puede tener una OpenStack Cloud todo en uno ejecutándose en CentOS 7 en minutos usando la utilidad de instalación Packstack. Después de la implementación, puede agregar más nodos a su nube OpenStack, si lo desea.
 
+https://www.rdoproject.org/install/adding-a-compute-node/
+
 En esta configuración, crearemos una nube OpenStack usando Packstack en CentOS con los siguientes servicios.
 
 * Cinder – Block storage service
@@ -14,6 +16,38 @@ En esta configuración, crearemos una nube OpenStack usando Packstack en CentOS 
 * Magnum -Container service
 
 Utilizaremos VirtualBox para este laboratorio con una VM en CentOS 7
+
+	Memoria:	2018
+	CPU:	4 de Intel(R) Core(TM) i5 CPU 650 @ 3.20GHz
+	Discos:	3 x 50G SATA
+	Network: 1GB
+
+# grep -c ^processor /proc/cpuinfo 
+4
+
+# free -h
+              total        used        free      shared  buff/cache   available
+Mem:           1,8G        102M        1,6G        8,3M        141M        1,6G
+Swap:          819M          0B        819M
+
+# lsblk 
+NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda               8:0    0   50G  0 disk 
+├─sda1            8:1    0  500M  0 part /boot
+├─sda2            8:2    0  7,5G  0 part 
+│ ├─centos-root 253:0    0 47,7G  0 lvm  /
+│ └─centos-swap 253:1    0  820M  0 lvm  [SWAP]
+└─sda3            8:3    0   42G  0 part 
+  └─centos-root 253:0    0 47,7G  0 lvm  /
+sdb               8:16   0   50G  0 disk 
+sdc               8:32   0   50G  0 disk 
+sr0              11:0    1 1024M  0 rom  
+
+# ip link  show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT 
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT qlen 1000
+    link/ether 08:00:27:9d:8d:0b brd ff:ff:ff:ff:ff:ff
 
 
 Paso 1: cumplir los requisitos de configuración
